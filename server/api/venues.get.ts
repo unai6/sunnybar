@@ -99,9 +99,10 @@ export default defineCachedEventHandler(
       const west = Number.parseFloat(query.west as string).toFixed(4)
       const north = Number.parseFloat(query.north as string).toFixed(4)
       const east = Number.parseFloat(query.east as string).toFixed(4)
-      // Include hour in cache key so sun position updates hourly
-      const hour = new Date().getHours()
-      return `venues:${south},${west},${north},${east}:${hour}`
+      // Include datetime in cache key so sun position updates per requested time
+      const dt = query.datetime ? new Date(query.datetime as string) : new Date()
+      const timeKey = `${dt.getFullYear()}-${dt.getMonth()}-${dt.getDate()}-${dt.getHours()}`
+      return `venues:${south},${west},${north},${east}:${timeKey}`
     },
     // Cache for 5 minutes
     maxAge: 60 * 5,

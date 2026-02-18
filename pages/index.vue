@@ -63,6 +63,12 @@ const handleDateTimeUpdate = async (datetime: Date): Promise<void> => {
   setDateTime(datetime)
 
   if (currentBounds.value) {
+    // Update sun position panel for the new time
+    const centerLat = (currentBounds.value.north + currentBounds.value.south) / 2
+    const centerLng = (currentBounds.value.east + currentBounds.value.west) / 2
+    updateSunInfo(centerLat, centerLng, datetime)
+
+    // Re-fetch venues with updated shadow analysis
     await fetchVenuesByBoundingBox(currentBounds.value, datetime)
   }
 }
