@@ -2,8 +2,6 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import type { Venue } from '~/domain/entities/Venue'
 
-const { t } = useI18n()
-
 interface Props {
   venues: Venue[]
   center: [number, number]
