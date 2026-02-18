@@ -149,7 +149,7 @@ const buildPopupContent = (venue: Venue, sunlightType: SunlightType): string => 
   `
 }
 
-const createMarker = (venue: Venue): CircleMarker | null => {
+const createMarker = (venue: Venue): any => {
   if (!L || !map) return null
 
   const sunlightType = getSunlightType(venue)
@@ -183,9 +183,11 @@ const createMarker = (venue: Venue): CircleMarker | null => {
 const updateMarkers = (): void => {
   if (!map || !L) return
 
-  markers.forEach((marker: CircleMarker) => marker.remove())
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  markers.forEach((marker: any) => marker.remove())
   markers.clear()
-  glowCircles.forEach((circle: Circle) => circle.remove())
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  glowCircles.forEach((circle: any) => circle.remove())
   glowCircles.clear()
 
   props.venues.forEach(venue => {
