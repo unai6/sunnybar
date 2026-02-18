@@ -48,8 +48,6 @@ export default defineCachedEventHandler(
       ? new Date(query.datetime as string)
       : new Date()
 
-    console.log(`[API] Fetching venues for bbox: ${south},${west},${north},${east}`)
-
     // Fetch venues and buildings in parallel from Overpass
     const [venuesResponse, buildingsResponse] = await Promise.all([
       executeOverpassQuery(buildVenueQuery(south, west, north, east)),
@@ -60,7 +58,7 @@ export default defineCachedEventHandler(
     const venues = parseVenues(venuesResponse.elements)
     const buildings = parseBuildings(buildingsResponse.elements)
 
-    console.log(`[API] Found ${venues.length} venues and ${buildings.length} buildings`)
+    console.info(`[API] Processed ${venues.length} venues, ${buildings.length} buildings`)
 
     // Calculate sun position for the center of bbox
     const centerLat = (south + north) / 2

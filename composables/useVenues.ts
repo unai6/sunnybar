@@ -137,8 +137,6 @@ export function useVenues() {
     loading.value = true
     error.value = null
 
-    console.log('[useVenues] Fetching venues via BFF for bbox:', bbox)
-
     try {
       const params = new URLSearchParams({
         south: bbox.south.toString(),
@@ -152,11 +150,7 @@ export function useVenues() {
 
       venues.value = response.venues.map(apiVenueToDomain)
       lastBbox.value = bbox
-
-      console.log(`[useVenues] Received ${response.venues.length} venues, ${response.meta.buildingsAnalyzed} buildings analyzed`)
     } catch (e: unknown) {
-      console.error('[useVenues] Error fetching venues:', e)
-
       const err = e as { statusCode?: number; data?: { statusMessage?: string } }
       const statusMessage = err.data?.statusMessage || ''
 

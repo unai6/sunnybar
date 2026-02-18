@@ -101,7 +101,6 @@ async function handleLocateMe(): Promise<void> {
       mapRef.value?.flyTo(geoState.value.latitude, geoState.value.longitude, LOCATE_ME_ZOOM)
     }
   } catch (e) {
-    console.error('Failed to get location:', e)
     toast.add({
       severity: 'error',
       summary: t('toast.error.title'),

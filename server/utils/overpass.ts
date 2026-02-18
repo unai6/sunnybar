@@ -85,13 +85,12 @@ export async function executeOverpassQuery(query: string): Promise<OverpassRespo
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     const endpoint = OVERPASS_ENDPOINTS[attempt % OVERPASS_ENDPOINTS.length]
-    console.log(`[Overpass] Attempt ${attempt + 1}/${MAX_RETRIES} using ${endpoint}`)
 
     try {
       const response = await makeOverpassRequest(endpoint, query)
 
       if (isRetryableStatus(response.status)) {
-        console.log(`[Overpass] Status ${response.status}, will retry`)
+        console.warn(`[Overpass] Status ${response.status}, retrying (${attempt + 1}/${MAX_RETRIES})`)
         lastError = new Error(`Server error: ${response.status}`)
         await sleep(INITIAL_DELAY_MS * (attempt + 1))
         continue
@@ -105,18 +104,18 @@ export async function executeOverpassQuery(query: string): Promise<OverpassRespo
       }
 
       const data = await response.json()
-      console.log(`[Overpass] Success: ${data.elements?.length || 0} elements`)
       return data
     } catch (error) {
       if (isNuxtError(error)) throw error
 
-      console.log(`[Overpass] Error: ${isAbortError(error) ? 'timeout' : error}`)
+      console.warn(`[Overpass] Attempt ${attempt + 1}/${MAX_RETRIES} failed: ${isAbortError(error) ? 'timeout' : error}`)
       lastError = error as Error
       await sleep(INITIAL_DELAY_MS * (attempt + 1))
     }
   }
 
-  console.error('[Overpass] All retries failed:', lastError)
+
+  console.error('[Overpass] All retries exhausted:', lastError)
   throw createError({
     statusCode: 503,
     statusMessage: 'Overpass API temporarily unavailable. Please try again later.'
