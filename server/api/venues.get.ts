@@ -2,6 +2,7 @@ import { executeOverpassQuery, buildVenueQuery, buildBuildingQuery } from '~/ser
 import { calculateSunPosition } from '~/server/utils/sun'
 import { parseVenues, parseBuildings, analyzeVenueShadow, type Venue } from '~/server/utils/shadow'
 
+
 /**
  * GET /api/venues
  *
@@ -81,6 +82,7 @@ export default defineCachedEventHandler(
       )
     }))
 
+    // Return venues with shadow analysis only (no ArcGIS enrichment)
     return {
       venues: venuesWithShadow,
       sunPosition: {

@@ -77,10 +77,19 @@
       "address": "Dirección",
       "confidence": "confianza",
       "available": "Disponible",
-      "no": "No"
+      "no": "No",
+      "openingHours": "Horario",
+      "rating": "Valoración",
+      "priceRange": "Rango de Precio",
+      "description": "Descripción",
+      "phone": "Teléfono",
+      "website": "Web",
+      "socialMedia": "Redes Sociales"
     },
     "button": {
-      "getDirections": "Cómo Llegar"
+      "getDirections": "Cómo Llegar",
+      "call": "Llamar",
+      "visitWebsite": "Web"
     }
   },
   "venueType": {

@@ -17,6 +17,17 @@ interface ApiVenue {
   longitude: number
   address?: string
   outdoor_seating?: boolean
+  phone?: string
+  website?: string
+  openingHours?: string
+  rating?: number
+  priceRange?: string
+  description?: string
+  socialMedia?: {
+    facebook?: string
+    instagram?: string
+    twitter?: string
+  }
   sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny'
 }
 
@@ -66,6 +77,13 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
     coordinates,
     address: apiVenue.address,
     outdoor_seating: apiVenue.outdoor_seating,
+    phone: apiVenue.phone,
+    website: apiVenue.website,
+    openingHours: apiVenue.openingHours,
+    rating: apiVenue.rating,
+    priceRange: apiVenue.priceRange,
+    description: apiVenue.description,
+    socialMedia: apiVenue.socialMedia,
     sunlightStatus
   })
 }

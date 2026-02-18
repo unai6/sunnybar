@@ -77,10 +77,19 @@
       "address": "Adreça",
       "confidence": "confiança",
       "available": "Disponible",
-      "no": "No"
+      "no": "No",
+      "openingHours": "Horari",
+      "rating": "Valoració",
+      "priceRange": "Rang de Preu",
+      "description": "Descripció",
+      "phone": "Telèfon",
+      "website": "Web",
+      "socialMedia": "Xarxes Socials"
     },
     "button": {
-      "getDirections": "Com Arribar-hi"
+      "getDirections": "Com Arribar-hi",
+      "call": "Trucar",
+      "visitWebsite": "Web"
     }
   },
   "venueType": {

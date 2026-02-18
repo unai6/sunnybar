@@ -99,16 +99,109 @@ function openDirections(): void {
       </div>
     </div>
 
+    <!-- Description -->
+    <div
+      v-if="venue.description"
+      class="p-3.5 bg-slate-50 rounded-lg border border-slate-200"
+    >
+      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-1">
+        {{ $t('venueDetail.label.description') }}
+      </div>
+      <div class="text-sm text-slate-700 leading-relaxed">
+        {{ venue.description }}
+      </div>
+    </div>
+
+    <!-- Rating & Price -->
+    <div
+      v-if="venue.rating || venue.priceRange"
+      class="grid grid-cols-2 gap-3"
+    >
+      <div v-if="venue.rating" class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-1">
+          {{ $t('venueDetail.label.rating') }}
+        </div>
+        <div class="flex items-center gap-1.5">
+          <i class="pi pi-star-fill text-amber-400" />
+          <span class="text-[15px] font-semibold text-slate-700">{{ venue.rating.toFixed(1) }}</span>
+        </div>
+      </div>
+      <div v-if="venue.priceRange" class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+        <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-1">
+          {{ $t('venueDetail.label.priceRange') }}
+        </div>
+        <div class="text-[15px] font-semibold text-emerald-600">
+          {{ venue.priceRange }}
+        </div>
+      </div>
+    </div>
+
     <!-- Opening Hours -->
     <div
       v-if="venue.openingHours"
       class="p-3.5 bg-slate-50 rounded-lg border border-slate-200"
     >
       <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-1">
-        Opening Hours
+        {{ $t('venueDetail.label.openingHours') }}
       </div>
       <div class="text-sm font-medium text-slate-700">
         {{ venue.openingHours }}
+      </div>
+    </div>
+
+    <!-- Contact Info -->
+    <div
+      v-if="venue.phone || venue.website"
+      class="flex flex-col gap-2"
+    >
+      <div
+        v-if="venue.phone"
+        class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors"
+        @click="callPhone(venue.phone)"
+      >
+        <i class="pi pi-phone text-slate-500" />
+        <span class="text-sm text-slate-700">{{ venue.phone }}</span>
+      </div>
+      <div
+        v-if="venue.website"
+        class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors"
+        @click="openUrl(venue.website)"
+      >
+        <i class="pi pi-globe text-slate-500" />
+        <span class="text-sm text-blue-600 truncate">{{ venue.website }}</span>
+      </div>
+    </div>
+
+    <!-- Social Media -->
+    <div
+      v-if="venue.socialMedia"
+      class="p-3.5 bg-slate-50 rounded-lg border border-slate-200"
+    >
+      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-2">
+        {{ $t('venueDetail.label.socialMedia') }}
+      </div>
+      <div class="flex gap-3">
+        <button
+          v-if="venue.socialMedia.facebook"
+          class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 cursor-pointer border-none transition-colors"
+          @click="openUrl(venue.socialMedia!.facebook)"
+        >
+          <i class="pi pi-facebook" />
+        </button>
+        <button
+          v-if="venue.socialMedia.instagram"
+          class="w-9 h-9 flex items-center justify-center rounded-lg bg-pink-50 text-pink-600 hover:bg-pink-100 cursor-pointer border-none transition-colors"
+          @click="openUrl(venue.socialMedia!.instagram)"
+        >
+          <i class="pi pi-instagram" />
+        </button>
+        <button
+          v-if="venue.socialMedia.twitter"
+          class="w-9 h-9 flex items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-100 cursor-pointer border-none transition-colors"
+          @click="openUrl(venue.socialMedia!.twitter)"
+        >
+          <i class="pi pi-twitter" />
+        </button>
       </div>
     </div>
 
@@ -127,7 +220,7 @@ function openDirections(): void {
     <div class="flex gap-2 pt-1">
       <Button
         v-if="venue.website"
-        label="Website"
+        :label="$t('venueDetail.button.visitWebsite')"
         icon="pi pi-globe"
         severity="secondary"
         outlined
@@ -136,7 +229,7 @@ function openDirections(): void {
       />
       <Button
         v-if="venue.phone"
-        label="Call"
+        :label="$t('venueDetail.button.call')"
         icon="pi pi-phone"
         severity="secondary"
         outlined

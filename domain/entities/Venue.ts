@@ -26,6 +26,14 @@ export interface VenueProps {
   outdoor_seating?: boolean;
   website?: string;
   phone?: string;
+  rating?: number;
+  priceRange?: string;
+  description?: string;
+  socialMedia?: {
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+  };
   sunlightStatus?: SunlightStatus;
 }
 
@@ -40,7 +48,15 @@ export class Venue {
     public readonly outdoor_seating?: boolean,
     public readonly website?: string,
     public readonly phone?: string,
-    private _sunlightStatus?: SunlightStatus
+    public readonly rating?: number,
+    public readonly priceRange?: string,
+    public readonly description?: string,
+    public readonly socialMedia?: {
+      facebook?: string;
+      instagram?: string;
+      twitter?: string;
+    },
+    private readonly _sunlightStatus?: SunlightStatus
   ) {}
 
   static create(props: VenueProps): Venue {
@@ -60,6 +76,10 @@ export class Venue {
       props.outdoor_seating,
       props.website,
       props.phone,
+      props.rating,
+      props.priceRange,
+      props.description,
+      props.socialMedia,
       props.sunlightStatus
     )
   }
@@ -82,6 +102,10 @@ export class Venue {
       this.outdoor_seating,
       this.website,
       this.phone,
+      this.rating,
+      this.priceRange,
+      this.description,
+      this.socialMedia,
       status
     )
   }
@@ -105,6 +129,10 @@ export class Venue {
       outdoor_seating: this.outdoor_seating,
       website: this.website,
       phone: this.phone,
+      rating: this.rating,
+      priceRange: this.priceRange,
+      description: this.description,
+      socialMedia: this.socialMedia,
       sunlightStatus: this._sunlightStatus ? {
         status: this._sunlightStatus.status,
         confidence: this._sunlightStatus.confidence,

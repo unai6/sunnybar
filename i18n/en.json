@@ -77,10 +77,19 @@
       "address": "Address",
       "confidence": "confidence",
       "available": "Available",
-      "no": "No"
+      "no": "No",
+      "openingHours": "Opening Hours",
+      "rating": "Rating",
+      "priceRange": "Price Range",
+      "description": "Description",
+      "phone": "Phone",
+      "website": "Website",
+      "socialMedia": "Social Media"
     },
     "button": {
-      "getDirections": "Get Directions"
+      "getDirections": "Get Directions",
+      "call": "Call",
+      "visitWebsite": "Website"
     }
   },
   "venueType": {

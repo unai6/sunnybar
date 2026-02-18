@@ -60,6 +60,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+      arcgisApiKey: process.env.ARCGIS_API_KEY || '',
     public: {
       overpassApiUrl: 'https://overpass-api.de/api/interpreter'
     }
@@ -94,6 +95,9 @@ export default defineNuxtConfig({
   vite: {
     optimizeDeps: {
       exclude: ['@arcgis/core']
+    },
+    server: {
+      allowedHosts: ['uncollusive-juelz-finished.ngrok-free.dev']
     },
     resolve: {
       alias: {

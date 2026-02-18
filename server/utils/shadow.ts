@@ -16,6 +16,17 @@ export interface Venue {
   longitude: number
   address?: string
   outdoor_seating?: boolean
+  phone?: string
+  website?: string
+  openingHours?: string
+  rating?: number
+  priceRange?: string
+  description?: string
+  socialMedia?: {
+    facebook?: string
+    instagram?: string
+    twitter?: string
+  }
   sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny'
 }
 
@@ -119,7 +130,10 @@ export function parseVenues(elements: Array<{
       latitude: lat,
       longitude: lon,
       address: buildAddress(tags),
-      outdoor_seating: tags.outdoor_seating === 'yes'
+      outdoor_seating: tags.outdoor_seating === 'yes',
+      phone: tags.phone || tags['contact:phone'] || undefined,
+      website: tags.website || tags['contact:website'] || undefined,
+      openingHours: tags.opening_hours || undefined
     })
   }
 
