@@ -5,7 +5,7 @@ import Toast from 'primevue/toast'
 <template>
   <Toast position="top-center" />
   <div class="flex flex-col h-screen overflow-hidden">
-    <header class="bg-white border-b border-gray-200 px-6 py-3 shrink-0">
+    <header class="hidden md:block bg-white border-b border-gray-200 px-6 py-3 shrink-0">
       <div class="flex items-center justify-between max-w-[1800px] mx-auto">
         <div class="flex items-center gap-6">
           <div class="flex items-center gap-2">

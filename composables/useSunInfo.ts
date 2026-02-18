@@ -3,11 +3,6 @@ import { GetSunInfoUseCase, type GetSunInfoResult } from '~/application/use-case
 import { SunCalcAdapter } from '~/infrastructure/adapters/SunCalcAdapter'
 
 export function useSunInfo() {
-  // State
-  const sunInfo = ref<GetSunInfoResult | null>(null)
-  const selectedDateTime = ref<Date>(new Date())
-  const currentLocation = ref<{ latitude: number; longitude: number } | null>(null)
-
   // Create use case
   function createUseCase(): GetSunInfoUseCase {
     const sunCalculator = new SunCalcAdapter()
@@ -41,6 +36,11 @@ export function useSunInfo() {
       )
     }
   }
+  // State
+  const sunInfo = ref<GetSunInfoResult | null>(null)
+  const selectedDateTime = ref<Date>(new Date())
+  const currentLocation = ref<{ latitude: number; longitude: number } | null>(null)
+
 
   return {
     // State
