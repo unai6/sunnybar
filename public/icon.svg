@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="sunGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#1E293B"/>
+  <!-- Sun rays -->
+  <g stroke="url(#sunGrad)" stroke-width="14" stroke-linecap="round" fill="none">
+    <line x1="256" y1="68" x2="256" y2="100"/>
+    <line x1="356" y1="108" x2="336" y2="132"/>
+    <line x1="400" y1="198" x2="372" y2="210"/>
+    <line x1="156" y1="108" x2="176" y2="132"/>
+    <line x1="112" y1="198" x2="140" y2="210"/>
+  </g>
+  <!-- Sun body -->
+  <circle cx="256" cy="198" r="72" fill="url(#sunGrad)"/>
+  <!-- Sun highlight -->
+  <circle cx="240" cy="180" r="24" fill="#FDE68A" opacity="0.5"/>
+  <!-- Glass body -->
+  <path d="M184 280 L200 420 L312 420 L328 280 Z" fill="url(#glassGrad)" opacity="0.9"/>
+  <!-- Glass rim -->
+  <rect x="174" y="268" width="164" height="20" rx="4" fill="#FBBF24"/>
+  <!-- Glass base -->
+  <rect x="210" y="420" width="92" height="12" rx="4" fill="#F59E0B"/>
+  <rect x="230" y="432" width="52" height="12" rx="4" fill="#D97706"/>
+  <!-- Beer foam -->
+  <ellipse cx="220" cy="290" rx="18" ry="10" fill="white" opacity="0.7"/>
+  <ellipse cx="250" cy="286" rx="22" ry="12" fill="white" opacity="0.8"/>
+  <ellipse cx="285" cy="290" rx="16" ry="10" fill="white" opacity="0.6"/>
+</svg>

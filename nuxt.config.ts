@@ -68,7 +68,22 @@ export default defineNuxtConfig({
     head: {
       title: 'SunBar - Find Sunny Terraces',
       meta: [
-        { name: 'description', content: 'Discover bars and restaurants with sunny terraces' }
+        { name: 'description', content: 'Discover bars and restaurants with sunny terraces' },
+        { name: 'theme-color', content: '#D97706' },
+        { name: 'msapplication-TileColor', content: '#D97706' },
+        { name: 'msapplication-config', content: '/browserconfig.xml' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:title', content: 'SunBar - Find Sunny Terraces' },
+        { property: 'og:description', content: 'Discover bars and restaurants with sunny terraces' },
+        { property: 'og:image', content: '/icon-512x512.png' }
+      ],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' }
       ]
     }
   },

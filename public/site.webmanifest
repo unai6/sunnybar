@@ -1,0 +1,27 @@
+{
+  "name": "SunBar",
+  "short_name": "SunBar",
+  "description": "Discover bars and restaurants with sunny terraces",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#D97706",
+  "background_color": "#1E293B",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
