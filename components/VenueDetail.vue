@@ -119,7 +119,7 @@ const openDirections = (): void => {
     >
       <i class="pi pi-info-circle text-blue-500 mt-0.5" />
       <span class="text-sm text-blue-800 leading-relaxed">
-        {{ venue.sunlightStatus.reason }}
+        {{ $t(venue.sunlightStatus.reason) }}
       </span>
     </div>
 

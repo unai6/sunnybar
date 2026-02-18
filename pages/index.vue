@@ -5,6 +5,9 @@ import ProgressSpinner from 'primevue/progressspinner'
 import type { Venue } from '~/domain/entities/Venue'
 import type { BoundingBox } from '~/domain/repositories/VenueRepository'
 
+const toast = useToast()
+const { t } = useI18n()
+
 // Composables
 const {
   loading,
@@ -86,6 +89,12 @@ const handleLocateMe = async (): Promise<void> => {
     }
   } catch (e) {
     console.error('Failed to get location:', e)
+    toast.add({
+      severity: 'error',
+      summary: t('toast.error.title'),
+      detail: t('toast.error.geolocation'),
+      life: 5000
+    })
   }
 }
 
@@ -100,13 +109,6 @@ onMounted(async () => {
   } catch {
     // Use default location (Madrid)
     updateSunInfo(mapCenter.value[0], mapCenter.value[1])
-  }
-})
-
-// Watch for errors
-watch(error, (newError) => {
-  if (newError) {
-    console.error('Error:', newError)
   }
 })
 </script>

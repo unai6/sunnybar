@@ -167,7 +167,7 @@ const initializeMap = async (): Promise<void> => {
       center: [props.center[1], props.center[0]],
       zoom: props.zoom,
       constraints: { minZoom: 10, maxZoom: 20 },
-      popup: { autoOpenEnabled: false }
+      popupEnabled: false
     })
 
     await view.when()

@@ -36,6 +36,7 @@ interface ApiResponse {
 
 /**
  * Convert API venue response to domain Venue entity
+ * Stores i18n keys as reason — translated at the view layer via $t()
  */
 function apiVenueToDomain(apiVenue: ApiVenue): Venue {
   const coordinates = Coordinates.create({
@@ -47,13 +48,13 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
   if (apiVenue.sunlightStatus) {
     switch (apiVenue.sunlightStatus) {
       case 'sunny':
-        sunlightStatus = SunlightStatus.sunny(1, 'Direct sunlight')
+        sunlightStatus = SunlightStatus.sunny(1, 'sunlight.description.directSunlight')
         break
       case 'shaded':
-        sunlightStatus = SunlightStatus.shaded(1, 'In building shadow')
+        sunlightStatus = SunlightStatus.shaded(1, 'sunlight.description.inBuildingShadow')
         break
       case 'partially_sunny':
-        sunlightStatus = SunlightStatus.partiallySunny(0.7, 'Partial shadow from nearby buildings')
+        sunlightStatus = SunlightStatus.partiallySunny(0.7, 'sunlight.description.partialShadow')
         break
     }
   }
@@ -69,7 +70,16 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
   })
 }
 
+const MAX_BBOX_DEGREES = 0.05
+
+function isBboxTooLarge(bbox: BoundingBox): boolean {
+  return (bbox.north - bbox.south) > MAX_BBOX_DEGREES || (bbox.east - bbox.west) > MAX_BBOX_DEGREES
+}
+
 export function useVenues() {
+  const toast = useToast()
+  const { t } = useI18n()
+
   // State
   const venues = ref<Venue[]>([])
   const loading = ref(false)
@@ -110,6 +120,17 @@ export function useVenues() {
     bbox: BoundingBox,
     datetime?: Date
   ): Promise<void> => {
+    // Client-side bbox validation — fail fast before hitting the server
+    if (isBboxTooLarge(bbox)) {
+      toast.add({
+        severity: 'warn',
+        summary: t('toast.error.title'),
+        detail: t('toast.error.bboxTooLarge'),
+        life: 5000
+      })
+      return
+    }
+
     loading.value = true
     error.value = null
 
@@ -132,8 +153,26 @@ export function useVenues() {
       console.log(`[useVenues] Received ${response.venues.length} venues, ${response.meta.buildingsAnalyzed} buildings analyzed`)
     } catch (e: unknown) {
       console.error('[useVenues] Error fetching venues:', e)
-      const err = e as { data?: { statusMessage?: string } }
-      error.value = err.data?.statusMessage || (e instanceof Error ? e.message : 'Failed to fetch venues')
+
+      const err = e as { statusCode?: number; data?: { statusMessage?: string } }
+      const statusMessage = err.data?.statusMessage || ''
+
+      // Pick the right toast message based on error type
+      let detail = t('toast.error.fetchVenues')
+      if (statusMessage.includes('Bounding box too large')) {
+        detail = t('toast.error.bboxTooLarge')
+      } else if (err.statusCode === 0 || (e instanceof TypeError && (e as TypeError).message === 'Failed to fetch')) {
+        detail = t('toast.error.network')
+      }
+
+      toast.add({
+        severity: 'error',
+        summary: t('toast.error.title'),
+        detail,
+        life: 5000
+      })
+
+      error.value = detail
       venues.value = []
     } finally {
       loading.value = false

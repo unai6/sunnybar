@@ -106,6 +106,13 @@
       "outdoorSeating": "Terraza exterior"
     }
   },
+  "sunlight": {
+    "description": {
+      "directSunlight": "Luz solar directa",
+      "inBuildingShadow": "En sombra de edificio",
+      "partialShadow": "Sombra parcial de edificios cercanos"
+    }
+  },
   "common": {
     "label": {
       "loading": "Cargando...",
@@ -113,6 +120,15 @@
     },
     "message": {
       "errorOccurred": "Ha ocurrido un error"
+    }
+  },
+  "toast": {
+    "error": {
+      "title": "Error",
+      "bboxTooLarge": "El área es demasiado grande. Haz zoom para buscar (máx. ~5km).",
+      "fetchVenues": "No se pudieron cargar los locales. Inténtalo de nuevo.",
+      "geolocation": "No se pudo obtener tu ubicación. Activa los servicios de ubicación.",
+      "network": "Error de red. Comprueba tu conexión e inténtalo de nuevo."
     }
   }
 }

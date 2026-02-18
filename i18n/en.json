@@ -106,6 +106,13 @@
       "outdoorSeating": "Outdoor seating"
     }
   },
+  "sunlight": {
+    "description": {
+      "directSunlight": "Direct sunlight",
+      "inBuildingShadow": "In building shadow",
+      "partialShadow": "Partial shadow from nearby buildings"
+    }
+  },
   "common": {
     "label": {
       "loading": "Loading...",
@@ -113,6 +120,15 @@
     },
     "message": {
       "errorOccurred": "An error occurred"
+    }
+  },
+  "toast": {
+    "error": {
+      "title": "Error",
+      "bboxTooLarge": "The area is too large. Please zoom in to search (max ~5km).",
+      "fetchVenues": "Could not load venues. Please try again.",
+      "geolocation": "Could not get your location. Please enable location services.",
+      "network": "Network error. Check your connection and try again."
     }
   }
 }
