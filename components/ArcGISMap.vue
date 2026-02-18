@@ -32,6 +32,7 @@ let EsriMap: typeof import('@arcgis/core/Map').default
 let GraphicsLayer: typeof import('@arcgis/core/layers/GraphicsLayer').default
 let Graphic: typeof import('@arcgis/core/Graphic').default
 let Point: typeof import('@arcgis/core/geometry/Point').default
+let SimpleMarkerSymbol: typeof import('@arcgis/core/symbols/SimpleMarkerSymbol').default
 let webMercatorToGeographic: typeof import('@arcgis/core/geometry/support/webMercatorUtils').webMercatorToGeographic
 
 // Expose methods
@@ -74,6 +75,7 @@ const loadArcGISModules = async () => {
     GraphicsLayerModule,
     GraphicModule,
     PointModule,
+    SimpleMarkerSymbolModule,
     webMercatorUtilsModule
   ] = await Promise.all([
     import('@arcgis/core/views/MapView'),
@@ -81,6 +83,7 @@ const loadArcGISModules = async () => {
     import('@arcgis/core/layers/GraphicsLayer'),
     import('@arcgis/core/Graphic'),
     import('@arcgis/core/geometry/Point'),
+    import('@arcgis/core/symbols/SimpleMarkerSymbol'),
     import('@arcgis/core/geometry/support/webMercatorUtils')
   ])
 
@@ -89,22 +92,27 @@ const loadArcGISModules = async () => {
   GraphicsLayer = GraphicsLayerModule.default
   Graphic = GraphicModule.default
   Point = PointModule.default
+  SimpleMarkerSymbol = SimpleMarkerSymbolModule.default
   webMercatorToGeographic = webMercatorUtilsModule.webMercatorToGeographic
 }
 
-const createSunnySymbol = () => ({
-  type: 'simple-marker',
-  size: 16,
-  color: [255, 193, 7, 1],
-  outline: { color: [255, 255, 255, 1], width: 2.5 }
-})
+const createSunnySymbol = (): __esri.SimpleMarkerSymbol | null => {
+  if (!SimpleMarkerSymbol) return null
+  return new SimpleMarkerSymbol({
+    size: 16,
+    color: [255, 193, 7, 1],
+    outline: { color: [255, 255, 255, 1], width: 2.5 }
+  })
+}
 
-const createShadedSymbol = () => ({
-  type: 'simple-marker',
-  size: 12,
-  color: [107, 114, 128, 0.85],
-  outline: { color: [255, 255, 255, 1], width: 2 }
-})
+const createShadedSymbol = (): __esri.SimpleMarkerSymbol | null => {
+  if (!SimpleMarkerSymbol) return null
+  return new SimpleMarkerSymbol({
+    size: 12,
+    color: [107, 114, 128, 0.85],
+    outline: { color: [255, 255, 255, 1], width: 2 }
+  })
+}
 
 const buildPopupContent = (venue: Venue, isSunny: boolean): string => {
   const typeLabel = t(`venueType.label.${venue.type}`)
@@ -146,11 +154,12 @@ const updateVenueMarkers = (): void => {
     })
 
     const isSunny = venue.isSunny()
+    const symbol = isSunny ? createSunnySymbol() : createShadedSymbol()
+    if (!symbol) return
 
     const graphic = new Graphic({
       geometry: point,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      symbol: isSunny ? createSunnySymbol() as any : createShadedSymbol() as any,
+      symbol,
       attributes: {
         id: venue.id,
         name: venue.name,

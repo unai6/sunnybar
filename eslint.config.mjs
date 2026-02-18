@@ -6,6 +6,7 @@ export default withNuxt({
     'no-extra-semi': 'error',
     quotes: ['error', 'single'],
     'comma-dangle': ['error', 'never'],
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    '@typescript-eslint/no-explicit-any': 'error'
   }
 })
