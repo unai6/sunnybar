@@ -44,9 +44,14 @@ export default defineCachedEventHandler(
     }
 
     // Parse datetime or use now
-    const datetime = query.datetime
-      ? new Date(query.datetime as string)
-      : new Date()
+    const parsedDate = query.datetime ? new Date(query.datetime as string) : null
+    if (parsedDate && Number.isNaN(parsedDate.getTime())) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Invalid datetime format. Expected ISO 8601 string.'
+      })
+    }
+    const datetime = parsedDate ?? new Date()
 
     // Fetch venues and buildings in parallel from Overpass
     const [venuesResponse, buildingsResponse] = await Promise.all([
