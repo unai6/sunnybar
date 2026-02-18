@@ -1,0 +1,118 @@
+{
+  "app": {
+    "title": {
+      "main": "SunBar - Find Sunny Terraces"
+    },
+    "meta": {
+      "description": "Discover bars and restaurants with sunny terraces"
+    }
+  },
+  "header": {
+    "label": {
+      "tagline": "Find sunny terraces near you",
+      "language": "Language"
+    },
+    "button": {
+      "menu": "Menu"
+    }
+  },
+  "controlPanel": {
+    "title": {
+      "searchArea": "Search Area",
+      "dateTime": "Date & Time",
+      "sunPosition": "Sun Position",
+      "filters": "Filters",
+      "results": "Results"
+    },
+    "button": {
+      "searchThisArea": "Search This Area",
+      "useMyLocation": "Use My Location",
+      "now": "Now"
+    },
+    "label": {
+      "altitude": "Altitude",
+      "azimuth": "Azimuth",
+      "sunrise": "Sunrise",
+      "sunset": "Sunset",
+      "total": "Total",
+      "sunny": "Sunny",
+      "shaded": "Shaded",
+      "minusOneHour": "-1 hour",
+      "plusOneHour": "+1 hour"
+    },
+    "filter": {
+      "onlySunnyVenues": "Only sunny venues",
+      "onlyOutdoorSeating": "Only with outdoor seating"
+    },
+    "message": {
+      "nighttime": "It's currently nighttime"
+    }
+  },
+  "venueList": {
+    "title": {
+      "nearbyVenues": "Nearby Venues"
+    },
+    "label": {
+      "found": "found",
+      "outdoor": "Outdoor"
+    },
+    "message": {
+      "noVenuesFound": "No venues found",
+      "tryDifferentArea": "Try searching a different area"
+    },
+    "status": {
+      "sunny": "Sunny",
+      "shaded": "Shaded"
+    }
+  },
+  "venueDetail": {
+    "title": {
+      "currentlySunny": "Currently Sunny!",
+      "currentlyShaded": "Currently Shaded",
+      "venueDetails": "Venue Details"
+    },
+    "label": {
+      "type": "Type",
+      "terrace": "Terrace",
+      "address": "Address",
+      "confidence": "confidence",
+      "available": "Available",
+      "no": "No"
+    },
+    "button": {
+      "getDirections": "Get Directions"
+    }
+  },
+  "venueType": {
+    "label": {
+      "bar": "Bar",
+      "restaurant": "Restaurant",
+      "cafe": "Café",
+      "pub": "Pub",
+      "biergarten": "Beer Garden"
+    }
+  },
+  "map": {
+    "title": {
+      "legend": "Sunlight Status"
+    },
+    "label": {
+      "sunny": "Sunny",
+      "shaded": "Shaded",
+      "partiallySunny": "Partially Sunny"
+    },
+    "message": {
+      "loadingMap": "Loading map...",
+      "outdoorSeating": "Outdoor seating"
+    }
+  },
+  "common": {
+    "label": {
+      "loading": "Loading...",
+      "error": "Error"
+    },
+    "message": {
+      "errorOccurred": "An error occurred"
+    }
+  }
+}

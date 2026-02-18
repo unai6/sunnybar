@@ -1,4 +1,7 @@
 /* SunBar - Main Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --sunbar-primary: #f59e0b;
@@ -117,4 +120,59 @@ html, body, #__nuxt {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+/* PrimeVue Dialog - Venue Detail Modal */
+.p-dialog-mask {
+  z-index: 10000 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px);
+}
+
+.venue-dialog.p-dialog {
+  z-index: 10001 !important;
+  background-color: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25) !important;
+  max-width: 420px !important;
+  width: 90vw !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+.venue-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  padding: 1.25rem 1.5rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+.venue-dialog .p-dialog-title {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  letter-spacing: -0.025em;
+}
+
+.venue-dialog .p-dialog-header-close {
+  width: 2.25rem !important;
+  height: 2.25rem !important;
+  border-radius: 10px !important;
+  background: #e2e8f0 !important;
+  transition: all 0.2s ease !important;
+}
+
+.venue-dialog .p-dialog-header-close:hover {
+  background: #cbd5e1 !important;
+}
+
+.venue-dialog .p-dialog-content {
+  background-color: #ffffff !important;
+  padding: 0 !important;
+  border-radius: 0 0 20px 20px !important;
+}
+
+/* Hide Leaflet popups when dialog is open */
+body:has(.p-dialog-mask) .leaflet-popup {
+  display: none;
 }

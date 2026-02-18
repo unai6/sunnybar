@@ -1,5 +1,5 @@
-import type { Venue } from '../entities/Venue';
-import type { Coordinates } from '../value-objects/Coordinates';
+import type { Venue } from '../entities/Venue'
+import type { Coordinates } from '../value-objects/Coordinates'
 
 /**
  * Bounding Box for geographic queries

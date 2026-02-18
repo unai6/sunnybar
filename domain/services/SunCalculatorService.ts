@@ -1,5 +1,5 @@
-import type { Coordinates } from '../value-objects/Coordinates';
-import type { SunPosition } from '../value-objects/SunPosition';
+import type { Coordinates } from '../value-objects/Coordinates'
+import type { SunPosition } from '../value-objects/SunPosition'
 
 /**
  * SunCalculatorService Port

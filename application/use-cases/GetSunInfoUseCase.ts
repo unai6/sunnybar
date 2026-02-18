@@ -1,5 +1,5 @@
-import type { SunCalculatorService } from '../../domain/services/SunCalculatorService';
-import { Coordinates } from '../../domain/value-objects/Coordinates';
+import type { SunCalculatorService } from '../../domain/services/SunCalculatorService'
+import { Coordinates } from '../../domain/value-objects/Coordinates'
 
 export interface GetSunInfoQuery {
   latitude: number;
@@ -32,15 +32,15 @@ export class GetSunInfoUseCase {
   ) {}
 
   execute(query: GetSunInfoQuery): GetSunInfoResult {
-    const date = query.date || new Date();
+    const date = query.date || new Date()
     const coordinates = Coordinates.create({
       latitude: query.latitude,
       longitude: query.longitude
-    });
+    })
 
-    const position = this.sunCalculator.getPosition(coordinates, date);
-    const times = this.sunCalculator.getSunTimes(coordinates, date);
-    const isDaytime = this.sunCalculator.isDaytime(coordinates, date);
+    const position = this.sunCalculator.getPosition(coordinates, date)
+    const times = this.sunCalculator.getSunTimes(coordinates, date)
+    const isDaytime = this.sunCalculator.isDaytime(coordinates, date)
 
     return {
       position: {
@@ -50,6 +50,6 @@ export class GetSunInfoUseCase {
       },
       times,
       isDaytime
-    };
+    }
   }
 }

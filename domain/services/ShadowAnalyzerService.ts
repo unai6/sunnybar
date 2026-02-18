@@ -1,7 +1,7 @@
-import type { Venue } from '../entities/Venue';
-import type { Building } from '../entities/Building';
-import type { SunPosition } from '../value-objects/SunPosition';
-import type { SunlightStatus } from '../value-objects/SunlightStatus';
+import type { Venue } from '../entities/Venue'
+import type { Building } from '../entities/Building'
+import type { SunPosition } from '../value-objects/SunPosition'
+import type { SunlightStatus } from '../value-objects/SunlightStatus'
 
 /**
  * ShadowAnalyzerService Port

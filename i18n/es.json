@@ -1,0 +1,118 @@
+{
+  "app": {
+    "title": {
+      "main": "SunBar - Encuentra Terrazas Soleadas"
+    },
+    "meta": {
+      "description": "Descubre bares y restaurantes con terrazas soleadas"
+    }
+  },
+  "header": {
+    "label": {
+      "tagline": "Encuentra terrazas soleadas cerca de ti",
+      "language": "Idioma"
+    },
+    "button": {
+      "menu": "Menú"
+    }
+  },
+  "controlPanel": {
+    "title": {
+      "searchArea": "Área de Búsqueda",
+      "dateTime": "Fecha y Hora",
+      "sunPosition": "Posición del Sol",
+      "filters": "Filtros",
+      "results": "Resultados"
+    },
+    "button": {
+      "searchThisArea": "Buscar en esta Área",
+      "useMyLocation": "Usar Mi Ubicación",
+      "now": "Ahora"
+    },
+    "label": {
+      "altitude": "Altitud",
+      "azimuth": "Azimut",
+      "sunrise": "Amanecer",
+      "sunset": "Atardecer",
+      "total": "Total",
+      "sunny": "Soleado",
+      "shaded": "Sombreado",
+      "minusOneHour": "-1 hora",
+      "plusOneHour": "+1 hora"
+    },
+    "filter": {
+      "onlySunnyVenues": "Solo lugares soleados",
+      "onlyOutdoorSeating": "Solo con terraza exterior"
+    },
+    "message": {
+      "nighttime": "Actualmente es de noche"
+    }
+  },
+  "venueList": {
+    "title": {
+      "nearbyVenues": "Lugares Cercanos"
+    },
+    "label": {
+      "found": "encontrados",
+      "outdoor": "Exterior"
+    },
+    "message": {
+      "noVenuesFound": "No se encontraron lugares",
+      "tryDifferentArea": "Intenta buscar en otra área"
+    },
+    "status": {
+      "sunny": "Soleado",
+      "shaded": "Sombreado"
+    }
+  },
+  "venueDetail": {
+    "title": {
+      "currentlySunny": "¡Actualmente Soleado!",
+      "currentlyShaded": "Actualmente en Sombra",
+      "venueDetails": "Detalles del Local"
+    },
+    "label": {
+      "type": "Tipo",
+      "terrace": "Terraza",
+      "address": "Dirección",
+      "confidence": "confianza",
+      "available": "Disponible",
+      "no": "No"
+    },
+    "button": {
+      "getDirections": "Cómo Llegar"
+    }
+  },
+  "venueType": {
+    "label": {
+      "bar": "Bar",
+      "restaurant": "Restaurante",
+      "cafe": "Cafetería",
+      "pub": "Pub",
+      "biergarten": "Jardín de Cerveza"
+    }
+  },
+  "map": {
+    "title": {
+      "legend": "Estado de Luz Solar"
+    },
+    "label": {
+      "sunny": "Soleado",
+      "shaded": "Sombreado",
+      "partiallySunny": "Parcialmente Soleado"
+    },
+    "message": {
+      "loadingMap": "Cargando mapa...",
+      "outdoorSeating": "Terraza exterior"
+    }
+  },
+  "common": {
+    "label": {
+      "loading": "Cargando...",
+      "error": "Error"
+    },
+    "message": {
+      "errorOccurred": "Ha ocurrido un error"
+    }
+  }
+}

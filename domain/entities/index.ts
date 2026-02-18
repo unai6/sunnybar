@@ -1,2 +1,2 @@
-export { Venue, VenueType, type VenueProps } from './Venue';
-export { Building, type BuildingProps } from './Building';
+export { Venue, VenueType, type VenueProps } from './Venue'
+export { Building, type BuildingProps } from './Building'

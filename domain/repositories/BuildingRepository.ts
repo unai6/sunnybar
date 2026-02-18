@@ -1,6 +1,6 @@
-import type { Building } from '../entities/Building';
-import type { BoundingBox } from './VenueRepository';
-import type { Coordinates } from '../value-objects/Coordinates';
+import type { Building } from '../entities/Building'
+import type { BoundingBox } from './VenueRepository'
+import type { Coordinates } from '../value-objects/Coordinates'
 
 /**
  * BuildingRepository Port

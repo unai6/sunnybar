@@ -1,5 +1,5 @@
-import { Coordinates } from '../value-objects/Coordinates';
-import { SunlightStatus } from '../value-objects/SunlightStatus';
+import type { Coordinates } from '../value-objects/Coordinates'
+import type { SunlightStatus } from '../value-objects/SunlightStatus'
 
 /**
  * VenueType - Types of venues we support
@@ -45,10 +45,10 @@ export class Venue {
 
   static create(props: VenueProps): Venue {
     if (!props.id) {
-      throw new Error('Venue must have an id');
+      throw new Error('Venue must have an id')
     }
     if (!props.name) {
-      throw new Error('Venue must have a name');
+      throw new Error('Venue must have a name')
     }
     return new Venue(
       props.id,
@@ -61,11 +61,11 @@ export class Venue {
       props.website,
       props.phone,
       props.sunlightStatus
-    );
+    )
   }
 
   get sunlightStatus(): SunlightStatus | undefined {
-    return this._sunlightStatus;
+    return this._sunlightStatus
   }
 
   /**
@@ -83,15 +83,15 @@ export class Venue {
       this.website,
       this.phone,
       status
-    );
+    )
   }
 
   isSunny(): boolean {
-    return this._sunlightStatus?.isSunny() ?? false;
+    return this._sunlightStatus?.isSunny() ?? false
   }
 
   hasOutdoorSeating(): boolean {
-    return this.outdoor_seating === true;
+    return this.outdoor_seating === true
   }
 
   toJSON(): Record<string, unknown> {
@@ -110,6 +110,6 @@ export class Venue {
         confidence: this._sunlightStatus.confidence,
         reason: this._sunlightStatus.reason
       } : undefined
-    };
+    }
   }
 }

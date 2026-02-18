@@ -1,4 +1,4 @@
-import { Coordinates } from '../value-objects/Coordinates';
+import type { Coordinates } from '../value-objects/Coordinates'
 
 /**
  * Building Entity
@@ -13,8 +13,8 @@ export interface BuildingProps {
 }
 
 export class Building {
-  private static readonly DEFAULT_FLOOR_HEIGHT = 3; // meters per floor
-  private static readonly DEFAULT_HEIGHT = 10;      // meters if nothing known
+  private static readonly DEFAULT_FLOOR_HEIGHT = 3 // meters per floor
+  private static readonly DEFAULT_HEIGHT = 10      // meters if nothing known
 
   private constructor(
     public readonly id: string,
@@ -24,16 +24,16 @@ export class Building {
   ) {}
 
   static create(props: BuildingProps): Building {
-    let height = props.height;
+    let height = props.height
 
     // Estimate height from levels if not provided
     if (!height && props.levels) {
-      height = props.levels * Building.DEFAULT_FLOOR_HEIGHT;
+      height = props.levels * Building.DEFAULT_FLOOR_HEIGHT
     }
 
     // Use default height if nothing available
     if (!height) {
-      height = Building.DEFAULT_HEIGHT;
+      height = Building.DEFAULT_HEIGHT
     }
 
     return new Building(
@@ -41,7 +41,7 @@ export class Building {
       props.coordinates,
       height,
       props.footprint
-    );
+    )
   }
 
   /**
@@ -51,9 +51,9 @@ export class Building {
    */
   calculateShadowLength(sunAltitudeRadians: number): number {
     if (sunAltitudeRadians <= 0) {
-      return Infinity;
+      return Infinity
     }
-    return this.height / Math.tan(sunAltitudeRadians);
+    return this.height / Math.tan(sunAltitudeRadians)
   }
 
   /**
@@ -68,29 +68,29 @@ export class Building {
     sunAzimuthDegrees: number,
     sunAltitudeRadians: number
   ): boolean {
-    const shadowLength = this.calculateShadowLength(sunAltitudeRadians);
-    if (shadowLength === Infinity) return true;
+    const shadowLength = this.calculateShadowLength(sunAltitudeRadians)
+    if (shadowLength === Infinity) return true
 
-    const distance = this.coordinates.distanceTo(point);
+    const distance = this.coordinates.distanceTo(point)
 
     // Quick check: if point is too far, building can't shade it
     if (distance > shadowLength + 50) { // 50m buffer
-      return false;
+      return false
     }
 
     // Calculate direction from building to point
-    const dLat = point.latitude - this.coordinates.latitude;
-    const dLng = point.longitude - this.coordinates.longitude;
-    const angleToPoint = (Math.atan2(dLng, dLat) * 180) / Math.PI;
+    const dLat = point.latitude - this.coordinates.latitude
+    const dLng = point.longitude - this.coordinates.longitude
+    const angleToPoint = (Math.atan2(dLng, dLat) * 180) / Math.PI
 
     // Shadow direction is opposite to sun
-    let shadowDirection = sunAzimuthDegrees + 180;
-    if (shadowDirection >= 360) shadowDirection -= 360;
+    let shadowDirection = sunAzimuthDegrees + 180
+    if (shadowDirection >= 360) shadowDirection -= 360
 
     // Check if point is roughly in shadow direction (within 45 degrees)
-    let angleDiff = Math.abs(angleToPoint - shadowDirection);
-    if (angleDiff > 180) angleDiff = 360 - angleDiff;
+    let angleDiff = Math.abs(angleToPoint - shadowDirection)
+    if (angleDiff > 180) angleDiff = 360 - angleDiff
 
-    return angleDiff < 45 && distance < shadowLength;
+    return angleDiff < 45 && distance < shadowLength
   }
 }

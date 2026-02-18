@@ -16,14 +16,14 @@ export class SunPosition {
   ) {}
 
   static create(props: SunPositionProps): SunPosition {
-    return new SunPosition(props.azimuth, props.altitude, props.timestamp);
+    return new SunPosition(props.azimuth, props.altitude, props.timestamp)
   }
 
   /**
    * Check if the sun is above the horizon
    */
   isAboveHorizon(): boolean {
-    return this.altitude > 0;
+    return this.altitude > 0
   }
 
   /**
@@ -31,16 +31,16 @@ export class SunPosition {
    */
   getAzimuthDegrees(): number {
     // SunCalc returns azimuth where 0 = south, so we need to convert
-    let degrees = (this.azimuth * 180) / Math.PI + 180;
-    if (degrees >= 360) degrees -= 360;
-    return degrees;
+    let degrees = (this.azimuth * 180) / Math.PI + 180
+    if (degrees >= 360) degrees -= 360
+    return degrees
   }
 
   /**
    * Get altitude in degrees
    */
   getAltitudeDegrees(): number {
-    return (this.altitude * 180) / Math.PI;
+    return (this.altitude * 180) / Math.PI
   }
 
   /**
@@ -48,16 +48,16 @@ export class SunPosition {
    * Returns how many times taller the shadow is compared to object height
    */
   getShadowLengthMultiplier(): number {
-    if (this.altitude <= 0) return Infinity;
-    return 1 / Math.tan(this.altitude);
+    if (this.altitude <= 0) return Infinity
+    return 1 / Math.tan(this.altitude)
   }
 
   /**
    * Get shadow direction (opposite to sun azimuth)
    */
   getShadowDirectionDegrees(): number {
-    let shadowDirection = this.getAzimuthDegrees() + 180;
-    if (shadowDirection >= 360) shadowDirection -= 360;
-    return shadowDirection;
+    let shadowDirection = this.getAzimuthDegrees() + 180
+    if (shadowDirection >= 360) shadowDirection -= 360
+    return shadowDirection
   }
 }

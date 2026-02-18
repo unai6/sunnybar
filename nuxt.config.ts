@@ -4,8 +4,22 @@ export default defineNuxtConfig({
 
   modules: [
     '@primevue/nuxt-module',
-    '@nuxtjs/leaflet'
+    '@nuxtjs/tailwindcss',
+    '@nuxt/eslint',
+    '@nuxtjs/i18n'
   ],
+
+  i18n: {
+    locales: [
+      { code: 'es', name: 'Español', file: 'es.json' },
+      { code: 'en', name: 'English', file: 'en.json' }
+    ],
+    defaultLocale: 'es',
+    lazy: true,
+    langDir: './',
+    strategy: 'no_prefix',
+    vueI18n: './i18n.config.ts'
+  },
 
   css: [
     'primeicons/primeicons.css',
@@ -32,9 +46,6 @@ export default defineNuxtConfig({
       title: 'SunBar - Find Sunny Terraces',
       meta: [
         { name: 'description', content: 'Discover bars and restaurants with sunny terraces' }
-      ],
-      link: [
-        { rel: 'stylesheet', href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css' }
       ]
     }
   },
@@ -43,6 +54,20 @@ export default defineNuxtConfig({
     strict: true,
     typeCheck: false
   },
+
+  vite: {
+    optimizeDeps: {
+      exclude: ['@arcgis/core']
+    },
+    resolve: {
+      alias: {
+        '@arcgis/core': '@arcgis/core'
+      }
+    }
+  },
+
+  // Ensure ArcGIS works with SSR disabled for the map component
+  ssr: false,
 
   compatibilityDate: '2024-09-01'
 })

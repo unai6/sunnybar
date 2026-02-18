@@ -24,20 +24,20 @@ export class SunlightStatus {
   ) {}
 
   static create(props: SunlightStatusProps): SunlightStatus {
-    const confidence = Math.max(0, Math.min(1, props.confidence));
-    return new SunlightStatus(props.status, confidence, props.reason);
+    const confidence = Math.max(0, Math.min(1, props.confidence))
+    return new SunlightStatus(props.status, confidence, props.reason)
   }
 
   static sunny(confidence: number = 1, reason?: string): SunlightStatus {
-    return SunlightStatus.create({ status: SunlightStatusType.SUNNY, confidence, reason });
+    return SunlightStatus.create({ status: SunlightStatusType.SUNNY, confidence, reason })
   }
 
   static shaded(confidence: number = 1, reason?: string): SunlightStatus {
-    return SunlightStatus.create({ status: SunlightStatusType.SHADED, confidence, reason });
+    return SunlightStatus.create({ status: SunlightStatusType.SHADED, confidence, reason })
   }
 
   static partiallySunny(confidence: number = 0.5, reason?: string): SunlightStatus {
-    return SunlightStatus.create({ status: SunlightStatusType.PARTIALLY_SUNNY, confidence, reason });
+    return SunlightStatus.create({ status: SunlightStatusType.PARTIALLY_SUNNY, confidence, reason })
   }
 
   static night(): SunlightStatus {
@@ -45,7 +45,7 @@ export class SunlightStatus {
       status: SunlightStatusType.NIGHT,
       confidence: 1,
       reason: 'Sun is below the horizon'
-    });
+    })
   }
 
   static unknown(reason?: string): SunlightStatus {
@@ -53,19 +53,19 @@ export class SunlightStatus {
       status: SunlightStatusType.UNKNOWN,
       confidence: 0,
       reason: reason || 'Unable to determine sunlight status'
-    });
+    })
   }
 
   isSunny(): boolean {
     return this.status === SunlightStatusType.SUNNY ||
-           this.status === SunlightStatusType.PARTIALLY_SUNNY;
+           this.status === SunlightStatusType.PARTIALLY_SUNNY
   }
 
   isShaded(): boolean {
-    return this.status === SunlightStatusType.SHADED;
+    return this.status === SunlightStatusType.SHADED
   }
 
   isNight(): boolean {
-    return this.status === SunlightStatusType.NIGHT;
+    return this.status === SunlightStatusType.NIGHT
   }
 }

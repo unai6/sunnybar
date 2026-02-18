@@ -1,7 +1,7 @@
-import SunCalc from 'suncalc';
-import type { SunCalculatorService } from '../../domain/services/SunCalculatorService';
-import { Coordinates } from '../../domain/value-objects/Coordinates';
-import { SunPosition } from '../../domain/value-objects/SunPosition';
+import SunCalc from 'suncalc'
+import type { SunCalculatorService } from '../../domain/services/SunCalculatorService'
+import type { Coordinates } from '../../domain/value-objects/Coordinates'
+import { SunPosition } from '../../domain/value-objects/SunPosition'
 
 /**
  * SunCalc Adapter
@@ -13,13 +13,13 @@ export class SunCalcAdapter implements SunCalculatorService {
       datetime,
       coordinates.latitude,
       coordinates.longitude
-    );
+    )
 
     return SunPosition.create({
       azimuth: position.azimuth,
       altitude: position.altitude,
       timestamp: datetime
-    });
+    })
   }
 
   getSunTimes(coordinates: Coordinates, date: Date): {
@@ -32,18 +32,18 @@ export class SunCalcAdapter implements SunCalculatorService {
       date,
       coordinates.latitude,
       coordinates.longitude
-    );
+    )
 
     return {
       sunrise: times.sunrise,
       sunset: times.sunset,
       solarNoon: times.solarNoon,
       goldenHour: times.goldenHour
-    };
+    }
   }
 
   isDaytime(coordinates: Coordinates, datetime: Date): boolean {
-    const position = this.getPosition(coordinates, datetime);
-    return position.isAboveHorizon();
+    const position = this.getPosition(coordinates, datetime)
+    return position.isAboveHorizon()
   }
 }
