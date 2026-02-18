@@ -1,4 +1,6 @@
 /* SunBar - Main Styles */
+@import './primevue-overrides.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,88 +13,10 @@
   --sunbar-background: #f8fafc;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html, body, #__nuxt {
-  height: 100%;
+  @apply h-full;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--sunbar-background);
-}
-
-/* Map Container */
-.map-container {
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-}
-
-/* Sunny/Shaded Markers */
-.sunny-marker {
-  background-color: var(--sunbar-sunny);
-  border: 3px solid #f59e0b;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
-}
-
-.shaded-marker {
-  background-color: var(--sunbar-shaded);
-  border: 3px solid #4b5563;
-  border-radius: 50%;
-  opacity: 0.7;
-}
-
-/* Custom Leaflet Popup */
-.leaflet-popup-content-wrapper {
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.leaflet-popup-content {
-  margin: 12px 16px;
-}
-
-/* Venue Card in Popup */
-.venue-popup {
-  min-width: 200px;
-}
-
-.venue-popup h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: #1f2937;
-}
-
-.venue-popup .status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.venue-popup .status.sunny {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.venue-popup .status.shaded {
-  background-color: #f3f4f6;
-  color: #4b5563;
-}
-
-/* Sidebar Panel */
-.sidebar-panel {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
 }
 
 /* Sun Icon Animation */
@@ -109,70 +33,4 @@ html, body, #__nuxt {
 
 .sun-icon {
   animation: sun-pulse 2s ease-in-out infinite;
-}
-
-/* Loading Overlay */
-.loading-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-/* PrimeVue Dialog - Venue Detail Modal */
-.p-dialog-mask {
-  z-index: 10000 !important;
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(4px);
-}
-
-.venue-dialog.p-dialog {
-  z-index: 10001 !important;
-  background-color: #ffffff !important;
-  border-radius: 20px !important;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25) !important;
-  max-width: 420px !important;
-  width: 90vw !important;
-  overflow: hidden !important;
-  border: none !important;
-}
-
-.venue-dialog .p-dialog-header {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
-  padding: 1.25rem 1.5rem !important;
-  border-bottom: 1px solid #e2e8f0 !important;
-  border-radius: 20px 20px 0 0 !important;
-}
-
-.venue-dialog .p-dialog-title {
-  font-size: 1.25rem !important;
-  font-weight: 700 !important;
-  color: #1e293b !important;
-  letter-spacing: -0.025em;
-}
-
-.venue-dialog .p-dialog-header-close {
-  width: 2.25rem !important;
-  height: 2.25rem !important;
-  border-radius: 10px !important;
-  background: #e2e8f0 !important;
-  transition: all 0.2s ease !important;
-}
-
-.venue-dialog .p-dialog-header-close:hover {
-  background: #cbd5e1 !important;
-}
-
-.venue-dialog .p-dialog-content {
-  background-color: #ffffff !important;
-  padding: 0 !important;
-  border-radius: 0 0 20px 20px !important;
-}
-
-/* Hide Leaflet popups when dialog is open */
-body:has(.p-dialog-mask) .leaflet-popup {
-  display: none;
 }

@@ -1,0 +1,46 @@
+/* PrimeVue Component Overrides */
+
+/* Calendar/Datepicker - ensure popup appears above map */
+.p-datepicker {
+  @apply z-[2000];
+}
+
+/* Dialog - ensure it appears above everything */
+.p-dialog-mask {
+  @apply z-[3000];
+}
+
+.p-dialog {
+  @apply z-[3001];
+}
+
+/* Venue Detail Dialog */
+.venue-dialog.p-dialog {
+  @apply max-w-md w-[90vw] overflow-hidden border-none bg-white;
+  border-radius: 20px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+}
+
+.venue-dialog .p-dialog-header {
+  @apply px-6 py-5;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 20px 20px 0 0;
+}
+
+.venue-dialog .p-dialog-title {
+  @apply text-xl font-bold text-slate-800 tracking-tight;
+}
+
+.venue-dialog .p-dialog-header-close {
+  @apply w-9 h-9 rounded-lg transition-all duration-200 bg-slate-200;
+}
+
+.venue-dialog .p-dialog-header-close:hover {
+  @apply bg-slate-300;
+}
+
+.venue-dialog .p-dialog-content {
+  @apply p-0 bg-white;
+  border-radius: 0 0 20px 20px;
+}
