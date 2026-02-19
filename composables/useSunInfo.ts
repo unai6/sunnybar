@@ -1,8 +1,15 @@
-import { ref } from 'vue'
-import { GetSunInfoUseCase, type GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
+import { storeToRefs } from 'pinia'
+import {
+    GetSunInfoUseCase
+} from '~/application/use-cases/GetSunInfoUseCase'
 import { SunCalcAdapter } from '~/infrastructure/adapters/SunCalcAdapter'
+import { useSunInfoStore } from '~/stores/sunInfo'
 
 export function useSunInfo() {
+  // Use Pinia store for framework-agnostic state management
+  const store = useSunInfoStore()
+  const { sunInfo, selectedDateTime, currentLocation } = storeToRefs(store)
+
   // Create use case
   function createUseCase(): GetSunInfoUseCase {
     const sunCalculator = new SunCalcAdapter()
@@ -10,23 +17,27 @@ export function useSunInfo() {
   }
 
   // Actions
-  function updateSunInfo(latitude: number, longitude: number, date?: Date): void {
+  function updateSunInfo(
+    latitude: number,
+    longitude: number,
+    date?: Date
+  ): void {
     const datetime = date || selectedDateTime.value
     const { data, error } = attemptSync(() =>
       createUseCase().execute({ latitude, longitude, date: datetime })
     )
 
     if (error) {
-      sunInfo.value = null
+      store.setSunInfo(null)
       return
     }
 
-    sunInfo.value = data
-    currentLocation.value = { latitude, longitude }
+    store.setSunInfo(data)
+    store.setCurrentLocation({ latitude, longitude })
   }
 
   function setDateTime(datetime: Date): void {
-    selectedDateTime.value = datetime
+    store.setSelectedDateTime(datetime)
 
     if (currentLocation.value) {
       updateSunInfo(
@@ -36,11 +47,6 @@ export function useSunInfo() {
       )
     }
   }
-  // State
-  const sunInfo = ref<GetSunInfoResult | null>(null)
-  const selectedDateTime = ref<Date>(new Date())
-  const currentLocation = ref<{ latitude: number; longitude: number } | null>(null)
-
 
   return {
     // State

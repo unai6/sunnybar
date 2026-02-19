@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import type { Venue } from '~/domain/entities/Venue'
 
 interface Props {
@@ -28,6 +28,7 @@ const isLoading = ref(true)
 // ArcGIS objects (loaded dynamically)
 let view: __esri.MapView | null = null
 let venueGraphicsLayer: __esri.GraphicsLayer | null = null
+let stationaryWatchHandle: __esri.WatchHandle | null = null
 
 // Module references
 let MapView: typeof import('@arcgis/core/views/MapView').default
@@ -179,10 +180,10 @@ async function initializeMap(): Promise<void> {
 
     await view.when()
 
-    reactiveUtils.watch(
-      () => view!.stationary,
+    stationaryWatchHandle = reactiveUtils.watch(
+      () => view?.stationary,
       (stationary: boolean) => {
-        if (stationary) emitBounds()
+        if (stationary && view) emitBounds()
       }
     )
 
@@ -214,6 +215,10 @@ async function initializeMap(): Promise<void> {
 onMounted(() => initializeMap())
 
 onUnmounted(() => {
+  if (stationaryWatchHandle) {
+    stationaryWatchHandle.remove()
+    stationaryWatchHandle = null
+  }
   if (view) {
     view.destroy()
     view = null

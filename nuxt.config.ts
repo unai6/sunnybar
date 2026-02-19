@@ -1,5 +1,5 @@
-import Aura from '@primeuix/themes/aura'
 import { definePreset } from '@primeuix/themes'
+import Aura from '@primeuix/themes/aura'
 
 const SunBarPreset = definePreset(Aura, {
   semantic: {
@@ -26,7 +26,8 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    '@pinia/nuxt'
   ],
 
   i18n: {
@@ -42,10 +43,7 @@ export default defineNuxtConfig({
     vueI18n: './i18n.config.ts'
   },
 
-  css: [
-    'primeicons/primeicons.css',
-    '~/assets/css/main.css'
-  ],
+  css: ['primeicons/primeicons.css', '~/assets/css/main.css'],
 
   primevue: {
     options: {
@@ -60,7 +58,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-      arcgisApiKey: process.env.ARCGIS_API_KEY || '',
+    arcgisApiKey: process.env.ARCGIS_API_KEY || '',
     public: {
       overpassApiUrl: 'https://overpass-api.de/api/interpreter'
     }
@@ -69,7 +67,10 @@ export default defineNuxtConfig({
   app: {
     head: {
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1, viewport-fit=cover'
+        },
         { name: 'theme-color', content: '#D97706' },
         { name: 'msapplication-TileColor', content: '#D97706' },
         { name: 'msapplication-config', content: '/browserconfig.xml' },
@@ -78,10 +79,24 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/icon.svg' },
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
-        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/favicon-32x32.png'
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon-16x16.png'
+        },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png'
+        },
         { rel: 'manifest', href: '/site.webmanifest' }
       ]
     }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import Button from 'primevue/button'
-import DatePicker from 'primevue/datepicker'
 import Checkbox from 'primevue/checkbox'
+import DatePicker from 'primevue/datepicker'
 import Tag from 'primevue/tag'
+import { ref, watch } from 'vue'
 import type { GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
 import type { VenueFilters } from '~/composables/useVenues'
 
@@ -70,6 +70,17 @@ function formatTime(date: Date): string {
 
 <template>
   <div class="p-4">
+    <!-- Language Switcher -->
+    <div class="mb-4 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <i class="pi pi-sun text-xl text-amber-500" />
+        <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
+          SunBar
+        </span>
+      </div>
+      <LocaleSwitcher />
+    </div>
+
     <!-- Search Section -->
     <div class="mb-6">
       <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
+import { ref } from 'vue'
 import { VenueErrorCode } from '~/composables/useVenues'
 
 enum MobileTab {
@@ -49,8 +49,13 @@ const {
   handleFilterUpdate: updateFilters,
   handleVenueClick,
   handleVenueSelect,
-  handleLocateMe
+  handleLocateMe,
+  initialize
 } = useMapExplorer()
+
+onMounted(async () => {
+  await initialize()
+})
 
 function showVenueError(errorCode: VenueErrorCode): void {
   const { severity, key } = ERROR_TOAST_MAP[errorCode]
@@ -137,7 +142,7 @@ async function onLocateMe(): Promise<void> {
                 SunBar
               </span>
             </div>
-            <!-- <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2">
               <LocaleSwitcher />
               <button
                 class="flex items-center justify-center w-9 h-9 border-none rounded-lg bg-gray-100 text-gray-500 cursor-pointer transition-colors duration-200 hover:bg-gray-200"
@@ -145,7 +150,7 @@ async function onLocateMe(): Promise<void> {
               >
                 <i class="pi pi-times" />
               </button>
-            </div> -->
+            </div>
           </div>
 
           <!-- Drawer Content: Tabs for Controls & Venues -->

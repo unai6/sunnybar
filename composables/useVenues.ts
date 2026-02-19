@@ -1,48 +1,47 @@
-import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { Venue, VenueType } from '~/domain/entities/Venue'
+import type { BoundingBox } from '~/domain/repositories/VenueRepository'
 import { Coordinates } from '~/domain/value-objects/Coordinates'
 import { SunlightStatus } from '~/domain/value-objects/SunlightStatus'
-import type { BoundingBox } from '~/domain/repositories/VenueRepository'
+import type { VenueFilters } from '~/stores/venues'
+import { useVenuesStore } from '~/stores/venues'
 
-export interface VenueFilters {
-  onlySunny: boolean;
-  onlyWithOutdoorSeating: boolean;
-}
+export type { VenueFilters } from '~/stores/venues'
 
 interface ApiVenue {
-  id: string
-  name: string
-  type: string
-  latitude: number
-  longitude: number
-  address?: string
-  outdoor_seating?: boolean
-  phone?: string
-  website?: string
-  openingHours?: string
-  rating?: number
-  priceRange?: string
-  description?: string
+  id: string;
+  name: string;
+  type: string;
+  latitude: number;
+  longitude: number;
+  address?: string;
+  outdoor_seating?: boolean;
+  phone?: string;
+  website?: string;
+  openingHours?: string;
+  rating?: number;
+  priceRange?: string;
+  description?: string;
   socialMedia?: {
-    facebook?: string
-    instagram?: string
-    twitter?: string
-  }
-  sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny'
+    facebook?: string;
+    instagram?: string;
+    twitter?: string;
+  };
+  sunlightStatus?: 'sunny' | 'shaded' | 'partially_sunny';
 }
 
 interface ApiResponse {
-  venues: ApiVenue[]
+  venues: ApiVenue[];
   sunPosition: {
-    azimuth: number
-    altitude: number
-    isDaytime: boolean
-  }
+    azimuth: number;
+    altitude: number;
+    isDaytime: boolean;
+  };
   meta: {
-    timestamp: string
-    buildingsAnalyzed: number
-    venueCount: number
-  }
+    timestamp: string;
+    buildingsAnalyzed: number;
+    venueCount: number;
+  };
 }
 
 /**
@@ -59,13 +58,22 @@ function apiVenueToDomain(apiVenue: ApiVenue): Venue {
   if (apiVenue.sunlightStatus) {
     switch (apiVenue.sunlightStatus) {
       case 'sunny':
-        sunlightStatus = SunlightStatus.sunny(1, 'sunlight.description.directSunlight')
+        sunlightStatus = SunlightStatus.sunny(
+          1,
+          'sunlight.description.directSunlight'
+        )
         break
       case 'shaded':
-        sunlightStatus = SunlightStatus.shaded(1, 'sunlight.description.inBuildingShadow')
+        sunlightStatus = SunlightStatus.shaded(
+          1,
+          'sunlight.description.inBuildingShadow'
+        )
         break
       case 'partially_sunny':
-        sunlightStatus = SunlightStatus.partiallySunny(0.7, 'sunlight.description.partialShadow')
+        sunlightStatus = SunlightStatus.partiallySunny(
+          0.7,
+          'sunlight.description.partialShadow'
+        )
         break
     }
   }
@@ -93,57 +101,44 @@ const MAX_BBOX_DEGREES = 0.05
 export enum VenueErrorCode {
   BBOX_TOO_LARGE = 'bbox-too-large',
   NETWORK = 'network',
-  FETCH_FAILED = 'fetch-failed'
+  FETCH_FAILED = 'fetch-failed',
 }
 
 function isBboxTooLarge(bbox: BoundingBox): boolean {
-  return (bbox.north - bbox.south) > MAX_BBOX_DEGREES || (bbox.east - bbox.west) > MAX_BBOX_DEGREES
+  return (
+    bbox.north - bbox.south > MAX_BBOX_DEGREES ||
+    bbox.east - bbox.west > MAX_BBOX_DEGREES
+  )
 }
 
 function classifyFetchError(e: Error): VenueErrorCode {
-  const err = e as Error & { statusCode?: number; data?: { statusMessage?: string } }
+  const err = e as Error & {
+    statusCode?: number;
+    data?: { statusMessage?: string };
+  }
   const statusMessage = err.data?.statusMessage || ''
 
-  if (statusMessage.includes('Bounding box too large')) return VenueErrorCode.BBOX_TOO_LARGE
-  if (err.statusCode === 0 || e.message === 'Failed to fetch') return VenueErrorCode.NETWORK
+  if (statusMessage.includes('Bounding box too large'))
+    return VenueErrorCode.BBOX_TOO_LARGE
+  if (err.statusCode === 0 || e.message === 'Failed to fetch')
+    return VenueErrorCode.NETWORK
   return VenueErrorCode.FETCH_FAILED
 }
 
 export function useVenues() {
-  // State
-  const venues = ref<Venue[]>([])
-  const loading = ref(false)
-  const error = ref<string | null>(null)
-  const lastBbox = ref<BoundingBox | null>(null)
+  // Use Pinia store for framework-agnostic state management
+  const store = useVenuesStore()
 
-  // Filters
-  const filters = ref<VenueFilters>({
-    onlySunny: false,
-    onlyWithOutdoorSeating: false
-  })
-
-  // Computed
-  const sunnyVenues = computed(() =>
-    venues.value.filter(v => v.isSunny())
-  )
-
-  const shadedVenues = computed(() =>
-    venues.value.filter(v => !v.isSunny())
-  )
-
-  const filteredVenues = computed(() => {
-    let result = venues.value
-
-    if (filters.value.onlySunny) {
-      result = result.filter(v => v.isSunny())
-    }
-
-    if (filters.value.onlyWithOutdoorSeating) {
-      result = result.filter(v => v.hasOutdoorSeating())
-    }
-
-    return result
-  })
+  const {
+    venues,
+    loading,
+    error,
+    lastBbox,
+    filters,
+    sunnyVenues,
+    shadedVenues,
+    filteredVenues
+  } = storeToRefs(store)
 
   // Actions
   async function fetchVenuesByBoundingBox(
@@ -151,12 +146,12 @@ export function useVenues() {
     datetime?: Date
   ): Promise<VenueErrorCode | null> {
     if (isBboxTooLarge(bbox)) {
-      error.value = VenueErrorCode.BBOX_TOO_LARGE
+      store.setError(VenueErrorCode.BBOX_TOO_LARGE)
       return VenueErrorCode.BBOX_TOO_LARGE
     }
 
-    loading.value = true
-    error.value = null
+    store.setLoading(true)
+    store.setError(null)
 
     const { data, error: fetchError } = await attempt(async () => {
       const params = new URLSearchParams({
@@ -172,20 +167,20 @@ export function useVenues() {
 
     if (fetchError) {
       const errorCode = classifyFetchError(fetchError)
-      error.value = errorCode
-      venues.value = []
-      loading.value = false
+      store.setError(errorCode)
+      store.setVenues([])
+      store.setLoading(false)
       return errorCode
     }
 
-    venues.value = data.venues.map(apiVenueToDomain)
-    lastBbox.value = bbox
-    loading.value = false
+    store.setVenues(data.venues.map(apiVenueToDomain))
+    store.setLastBbox(bbox)
+    store.setLoading(false)
     return null
   }
 
   function setFilters(newFilters: Partial<VenueFilters>): void {
-    filters.value = { ...filters.value, ...newFilters }
+    store.setFilters(newFilters)
   }
 
   return {
