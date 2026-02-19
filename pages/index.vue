@@ -223,7 +223,6 @@ async function onLocateMe(): Promise<void> {
         @update-datetime="handleDateTimeUpdate"
         @update-filters="handleFilterUpdate"
       />
-      />
     </Drawer>
 
     <!-- Desktop Layout -->

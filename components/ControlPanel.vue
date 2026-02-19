@@ -5,7 +5,7 @@ import DatePicker from 'primevue/datepicker'
 import Tag from 'primevue/tag'
 import { ref, watch } from 'vue'
 import type { GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
-import type { VenueFilters } from '~/composables/useVenues'
+import type { VenueFilters } from '~/stores/venues'
 
 interface Props {
   loading: boolean
