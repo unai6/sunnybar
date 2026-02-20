@@ -3,17 +3,17 @@
  */
 
 export interface OverpassElement {
-  type: string
-  id: number
-  lat?: number
-  lon?: number
-  center?: { lat: number; lon: number }
-  geometry?: Array<{ lat: number; lon: number }>
-  tags?: Record<string, string>
+  type: string;
+  id: number;
+  lat?: number;
+  lon?: number;
+  center?: { lat: number; lon: number };
+  geometry?: Array<{ lat: number; lon: number }>;
+  tags?: Record<string, string>;
 }
 
 export interface OverpassResponse {
-  elements: OverpassElement[]
+  elements: OverpassElement[];
 }
 
 // Multiple Overpass API endpoints for failover
@@ -30,7 +30,7 @@ const INITIAL_DELAY_MS = 1000
  * Sleep utility for retry delays
  */
 function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**
@@ -80,7 +80,9 @@ async function makeOverpassRequest(
 /**
  * Execute Overpass query with retry logic and endpoint failover
  */
-export async function executeOverpassQuery(query: string): Promise<OverpassResponse> {
+export async function executeOverpassQuery(
+  query: string
+): Promise<OverpassResponse> {
   let lastError: Error | null = null
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -90,7 +92,9 @@ export async function executeOverpassQuery(query: string): Promise<OverpassRespo
       const response = await makeOverpassRequest(endpoint, query)
 
       if (isRetryableStatus(response.status)) {
-        console.warn(`[Overpass] Status ${response.status}, retrying (${attempt + 1}/${MAX_RETRIES})`)
+        console.warn(
+          `[Overpass] Status ${response.status}, retrying (${attempt + 1}/${MAX_RETRIES})`
+        )
         lastError = new Error(`Server error: ${response.status}`)
         await sleep(INITIAL_DELAY_MS * (attempt + 1))
         continue
@@ -108,22 +112,51 @@ export async function executeOverpassQuery(query: string): Promise<OverpassRespo
     } catch (err) {
       if (isNuxtError(err)) throw err
 
-      console.warn(`[Overpass] Attempt ${attempt + 1}/${MAX_RETRIES} failed: ${isAbortError(err) ? 'timeout' : err}`)
+      console.warn(
+        `[Overpass] Attempt ${attempt + 1}/${MAX_RETRIES} failed: ${isAbortError(err) ? 'timeout' : err}`
+      )
       lastError = err as Error
       await sleep(INITIAL_DELAY_MS * (attempt + 1))
     }
   }
 
-
   console.error('[Overpass] All retries exhausted:', lastError)
   throw createError({
     statusCode: 503,
-    statusMessage: 'Overpass API temporarily unavailable. Please try again later.'
+    statusMessage:
+      'Overpass API temporarily unavailable. Please try again later.'
   })
 }
 
 /**
- * Build venue query for bounding box
+ * Build combined venue and building query for bounding box
+ * Combines both queries in a single request for better performance
+ */
+export function buildCombinedQuery(
+  south: number,
+  west: number,
+  north: number,
+  east: number
+): string {
+  const bboxStr = `${south},${west},${north},${east}`
+
+  // Combined query optimized for speed:
+  // - Venues: all amenities in bbox
+  // - Buildings: only those with 3+ levels or explicit height (filters out small buildings)
+  // - out center: reduces payload size significantly
+  return `
+    [out:json][timeout:15];
+    (
+      node["amenity"~"^(bar|restaurant|cafe|pub|biergarten)$"](${bboxStr});
+      way["building"]["height"](${bboxStr});
+      way["building"]["building:levels"~"^([3-9]|[1-9][0-9]+)$"](${bboxStr});
+    );
+    out center;
+  `
+}
+
+/**
+ * Build venue query for bounding box (deprecated - use buildCombinedQuery)
  */
 export function buildVenueQuery(
   south: number,
@@ -133,16 +166,15 @@ export function buildVenueQuery(
 ): string {
   const bboxStr = `${south},${west},${north},${east}`
 
-  // Simplified query - nodes only, combined amenity filter
   return `
-    [out:json][timeout:25];
+    [out:json][timeout:20];
     node["amenity"~"^(bar|restaurant|cafe|pub|biergarten)$"](${bboxStr});
     out;
   `
 }
 
 /**
- * Build building query for bounding box (only ways with height info)
+ * Build building query for bounding box (deprecated - use buildCombinedQuery)
  */
 export function buildBuildingQuery(
   south: number,
@@ -152,10 +184,13 @@ export function buildBuildingQuery(
 ): string {
   const bboxStr = `${south},${west},${north},${east}`
 
-  // Get buildings - prefer those with height/levels info
+  // Only fetch buildings with height info (relevant for shadow calculations)
   return `
-    [out:json][timeout:25];
-    way["building"](${bboxStr});
+    [out:json][timeout:20];
+    (
+      way["building"]["height"](${bboxStr});
+      way["building"]["building:levels"](${bboxStr});
+    );
     out center;
   `
 }
