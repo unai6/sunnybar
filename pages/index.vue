@@ -13,9 +13,8 @@ enum ToastSeverity {
 const toast = useToast()
 const { t } = useI18n()
 
-// Mobile bottom drawers state
+// Mobile bottom drawer state
 const showVenuesDrawer = ref(false)
-const showSettingsDrawer = ref(false)
 
 const TOAST_DURATION_MS = 5000
 
@@ -113,49 +112,40 @@ async function onLocateMe(): Promise<void> {
       class="md:hidden fixed bottom-0 left-0 right-0 z-[300] bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
       style="padding-bottom: env(safe-area-inset-bottom, 0px)"
     >
-      <div class="grid grid-cols-4 gap-1 p-2">
+      <div class="grid grid-cols-3 gap-1 p-1.5">
         <!-- Search Area Button -->
         <button
           :disabled="loading"
-          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg transition-all duration-200 active:scale-95 disabled:opacity-50"
+          class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg transition-all duration-200 active:scale-95 disabled:opacity-50"
           :class="loading ? 'bg-gray-100 text-gray-400' : 'bg-amber-500 text-white active:bg-amber-600'"
           @click="handleSearch"
         >
-          <i :class="loading ? 'pi pi-spin pi-spinner text-lg' : 'pi pi-refresh text-lg'" />
-          <span class="text-xs mt-1 font-medium">{{ $t('controlPanel.mobile.search') }}</span>
+          <i :class="loading ? 'pi pi-spin pi-spinner text-base' : 'pi pi-refresh text-base'" />
+          <span class="text-[10px] mt-0.5 font-medium">{{ $t('controlPanel.mobile.search') }}</span>
         </button>
 
         <!-- Locate Me Button -->
         <button
-          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
+          class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
           @click="onLocateMe"
         >
-          <i class="pi pi-map-marker text-lg" />
-          <span class="text-xs mt-1">{{ $t('controlPanel.mobile.locate') }}</span>
+          <i class="pi pi-map-marker text-base" />
+          <span class="text-[10px] mt-0.5">{{ $t('controlPanel.mobile.locate') }}</span>
         </button>
 
         <!-- Venues List Button -->
         <button
-          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200 relative"
+          class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200 relative"
           @click="showVenuesDrawer = true"
         >
-          <i class="pi pi-list text-lg" />
-          <span class="text-xs mt-1">{{ $t('controlPanel.mobile.venues') }}</span>
+          <i class="pi pi-list text-base" />
+          <span class="text-[10px] mt-0.5">{{ $t('controlPanel.mobile.venues') }}</span>
           <span
             v-if="filteredVenues.length > 0"
-            class="absolute top-1 right-1 bg-amber-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1"
+            class="absolute top-0.5 right-0.5 bg-amber-500 text-white text-[9px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1"
           >
             {{ filteredVenues.length > 99 ? '99+' : filteredVenues.length }}
           </span>
-        </button>
-
-        <!-- Settings Button -->
-        <button
-          class="flex flex-col items-center justify-center py-2 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
-          @click="showSettingsDrawer = true"
-        >
-          <i class="pi pi-sliders-h text-lg" />
-          <span class="text-xs mt-1">{{ $t('controlPanel.mobile.settings') }}</span>
         </button>
       </div>
     </div>
@@ -190,41 +180,6 @@ async function onLocateMe(): Promise<void> {
       />
     </Drawer>
 
-    <!-- Mobile Settings Bottom Drawer -->
-    <Drawer
-      v-model:visible="showSettingsDrawer"
-      position="bottom"
-      class="md:hidden !h-full"
-      :show-close-icon="false"
-    >
-      <template #header>
-        <div class="flex items-center justify-between w-full">
-          <h2 class="text-lg font-semibold flex items-center gap-2">
-            <i class="pi pi-sliders-h text-amber-500" />
-            {{ $t('controlPanel.mobile.settings') }}
-          </h2>
-          <button
-            class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
-            @click="showSettingsDrawer = false"
-          >
-            <i class="pi pi-times" />
-          </button>
-        </div>
-      </template>
-      <ControlPanel
-        :loading="loading"
-        :venues-count="filteredVenues.length"
-        :sunny-count="sunnyVenues.length"
-        :shaded-count="shadedVenues.length"
-        :sun-info="sunInfo"
-        :selected-date-time="selectedDateTime"
-        :filters="filters"
-        :hide-search-section="true"
-        @update-datetime="handleDateTimeUpdate"
-        @update-filters="handleFilterUpdate"
-      />
-    </Drawer>
-
     <!-- Desktop Layout -->
     <div class="h-full md:grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr_300px] gap-0">
       <!-- Control Panel (desktop only) -->
@@ -247,7 +202,7 @@ async function onLocateMe(): Promise<void> {
       <!-- Map (always rendered, single instance) -->
       <div
         class="relative h-full"
-        :style="{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))' }"
+        :style="{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
         :class="{ 'md:!p-0': true }"
       >
         <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
@@ -263,6 +218,21 @@ async function onLocateMe(): Promise<void> {
           @bounds-changed="handleBoundsChanged"
           @venue-click="handleVenueClick"
         />
+
+        <!-- Mobile Map Controls Overlay -->
+        <div
+          class="md:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto"
+          style="padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px))"
+        >
+          <MapControls
+            :selected-date-time="selectedDateTime"
+            :filters="filters"
+            :sunny-count="sunnyVenues.length"
+            :shaded-count="shadedVenues.length"
+            @update-datetime="handleDateTimeUpdate"
+            @update-filters="handleFilterUpdate"
+          />
+        </div>
       </div>
 
       <!-- Venue List Sidebar (desktop only) -->

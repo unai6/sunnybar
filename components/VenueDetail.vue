@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Button from 'primevue/button'
-import type { Venue } from '~/domain/entities/Venue'
+import Button from 'primevue/button';
+import type { Venue } from '~/domain/entities/Venue';
 
 interface Props {
   venue: Venue
@@ -149,27 +149,22 @@ function openDirections(): void {
       </div>
     </div>
 
-    <!-- Contact Info -->
+    <!-- Website -->
     <div
-      v-if="venue.phone || venue.website"
-      class="flex flex-col gap-2"
+      v-if="venue.website"
+      class="p-3.5 bg-slate-50 rounded-lg border border-slate-200"
     >
-      <div
-        v-if="venue.phone"
-        class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors"
-        @click="callPhone(venue.phone)"
-      >
-        <i class="pi pi-phone text-slate-500" />
-        <span class="text-sm text-slate-700">{{ venue.phone }}</span>
+      <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wide mb-1">
+        {{ $t('venueDetail.label.website') }}
       </div>
-      <div
-        v-if="venue.website"
-        class="flex items-center gap-2.5 p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors"
-        @click="openUrl(venue.website)"
+      <a
+        :href="venue.website"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-sm text-blue-600 hover:text-blue-700 underline break-all"
       >
-        <i class="pi pi-globe text-slate-500" />
-        <span class="text-sm text-blue-600 truncate">{{ venue.website }}</span>
-      </div>
+        {{ venue.website }}
+      </a>
     </div>
 
     <!-- Social Media -->
@@ -218,15 +213,6 @@ function openDirections(): void {
 
     <!-- Actions -->
     <div class="flex gap-2 pt-1">
-      <Button
-        v-if="venue.website"
-        :label="$t('venueDetail.button.visitWebsite')"
-        icon="pi pi-globe"
-        severity="secondary"
-        outlined
-        class="flex-1"
-        @click="openUrl(venue.website)"
-      />
       <Button
         v-if="venue.phone"
         :label="$t('venueDetail.button.call')"
