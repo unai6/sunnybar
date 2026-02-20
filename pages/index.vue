@@ -95,7 +95,7 @@ async function onLocateMe(): Promise<void> {
   <div class="relative h-full">
     <!-- Mobile Top Bar -->
     <div
-      class="md:hidden fixed top-0 left-0 right-0 z-[300] bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between"
+      class="lg:hidden fixed top-0 left-0 right-0 z-[300] bg-white/95 backdrop-blur-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between"
       style="padding-top: calc(0.75rem + env(safe-area-inset-top, 0px))"
     >
       <div class="flex items-center gap-2">
@@ -109,7 +109,7 @@ async function onLocateMe(): Promise<void> {
 
     <!-- Mobile Bottom Action Bar -->
     <div
-      class="md:hidden fixed bottom-0 left-0 right-0 z-[300] bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
+      class="lg:hidden fixed bottom-0 left-0 right-0 z-[300] bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
       style="padding-bottom: env(safe-area-inset-bottom, 0px)"
     >
       <div class="grid grid-cols-3 gap-1 p-1.5">
@@ -154,7 +154,7 @@ async function onLocateMe(): Promise<void> {
     <Drawer
       v-model:visible="showVenuesDrawer"
       position="bottom"
-      class="md:hidden !h-full"
+      class="lg:hidden !h-full"
       :show-close-icon="false"
     >
       <template #header>
@@ -181,9 +181,9 @@ async function onLocateMe(): Promise<void> {
     </Drawer>
 
     <!-- Desktop Layout -->
-    <div class="h-full md:grid md:grid-cols-[280px_1fr] lg:grid-cols-[320px_1fr_300px] gap-0">
+    <div class="h-full lg:grid lg:grid-cols-[320px_1fr_300px] gap-0">
       <!-- Control Panel (desktop only) -->
-      <aside class="hidden md:block border-r border-gray-200 overflow-y-auto" aria-label="Search controls">
+      <aside class="hidden lg:block border-r border-gray-200 overflow-y-auto" aria-label="Search controls">
         <ControlPanel
           :loading="loading"
           :venues-count="filteredVenues.length"
@@ -203,7 +203,7 @@ async function onLocateMe(): Promise<void> {
       <div
         class="relative h-full"
         :style="{ paddingTop: 'calc(3.5rem + env(safe-area-inset-top, 0px))', paddingBottom: 'calc(4rem + env(safe-area-inset-bottom, 0px))' }"
-        :class="{ 'md:!p-0': true }"
+        :class="{ 'lg:!p-0': true }"
       >
         <div v-if="loading" class="absolute inset-0 bg-white/80 flex items-center justify-center z-10">
           <ProgressSpinner />
@@ -221,7 +221,7 @@ async function onLocateMe(): Promise<void> {
 
         <!-- Mobile Map Controls Overlay -->
         <div
-          class="md:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto"
+          class="lg:hidden absolute bottom-0 left-2 right-2 z-[200] pointer-events-auto"
           style="padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px))"
         >
           <MapControls

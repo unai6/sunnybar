@@ -70,9 +70,9 @@ function formatTime(date: Date): string {
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="p-4 md:p-3">
     <!-- Header -->
-    <div v-if="!hideSearchSection" class="mb-4 flex items-center gap-2">
+    <div v-if="!hideSearchSection" class="mb-4 md:mb-3 flex items-center gap-2">
       <i class="pi pi-sun text-xl text-amber-500" />
       <span class="text-lg font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
         SunBar
@@ -81,7 +81,7 @@ function formatTime(date: Date): string {
 
     <!-- Search Section -->
     <div v-if="!hideSearchSection" class="mb-6 md:mb-4">
-      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 md:mb-2 uppercase tracking-wider">
         <i class="pi pi-search text-gray-500" />
         {{ $t('controlPanel.title.searchArea') }}
       </h3>
@@ -105,7 +105,7 @@ function formatTime(date: Date): string {
 
     <!-- Date/Time Section -->
     <div class="mb-6 md:mb-4">
-      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 md:mb-2 uppercase tracking-wider">
         <i class="pi pi-clock text-gray-500" />
         {{ $t('controlPanel.title.dateTime') }}
       </h3>
@@ -150,7 +150,7 @@ function formatTime(date: Date): string {
 
     <!-- Sun Info Section -->
     <div v-if="sunInfo" class="mb-6 md:mb-4">
-      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 md:mb-2 uppercase tracking-wider">
         <i :class="['pi pi-sun', sunInfo.isDaytime ? 'text-amber-500' : 'text-gray-500']" />
         {{ $t('controlPanel.title.sunPosition') }}
       </h3>
@@ -184,7 +184,7 @@ function formatTime(date: Date): string {
 
     <!-- Filters Section -->
     <div class="mb-6 md:mb-4">
-      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 md:mb-2 uppercase tracking-wider">
         <i class="pi pi-filter text-gray-500" />
         {{ $t('controlPanel.title.filters') }}
       </h3>
@@ -218,7 +218,7 @@ function formatTime(date: Date): string {
 
     <!-- Stats Section -->
     <div class="mb-6 md:mb-4">
-      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">
+      <h3 class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3 md:mb-2 uppercase tracking-wider">
         <i class="pi pi-chart-bar text-gray-500" />
         {{ $t('controlPanel.title.results') }}
       </h3>
