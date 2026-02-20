@@ -12,8 +12,6 @@ import { useMapExplorerStore } from '~/stores/mapExplorer'
 const LOCATE_ME_ZOOM = 16
 const VENUE_SELECT_ZOOM = 17
 
-export type { MapRef }
-
 export function useMapExplorer() {
   // Composables
   const {
