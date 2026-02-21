@@ -168,19 +168,15 @@ onUnmounted(() => {
 })
 
 // Watchers
-watch(
-  () => props.venues,
-  () => {
-    if (venueMarkers) {
-      venueMarkers.updateMarkers(currentView.value.getVenueGraphicsLayer(), props.venues)
+watch(() => props.venues, (value) => {
+  if (venueMarkers) {
+      venueMarkers.updateMarkers(currentView.value.getVenueGraphicsLayer(), value)
     }
   },
   { deep: true }
 )
 
-watch(
-  () => props.center,
-  (newCenter) => {
+watch(() => props.center, (newCenter) => {
     currentView.value.setCenter(newCenter)
   }
 )

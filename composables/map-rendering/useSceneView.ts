@@ -62,8 +62,8 @@ export function useSceneView() {
       venueGraphicsLayer = new GraphicsLayer({
         title: 'Venues',
         elevationInfo: {
-          mode: 'relative-to-ground',
-          offset: 20 // Elevated above buildings for visibility and clickability
+          mode: 'relative-to-scene',
+          offset: 5 // Elevated above scene geometry (buildings) for visibility and clickability
         }
       })
 
