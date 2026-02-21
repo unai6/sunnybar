@@ -55,13 +55,19 @@ export function useMapView() {
 
       await view.when()
 
+      // Position all UI controls below search bar using view padding
+      // Search bar is at top-4 (16px) with ~60px height + gap = ~90px total
+      view.ui.padding = { top: 100, left: 16, right: 16, bottom: 16 }
+
       // Watch for stationary state (map stopped moving)
-      stationaryWatchHandle = reactiveUtils.watch(() => !!view?.stationary, (stationary: boolean) => {
-        if (stationary && view) {
-          callbacks.onBoundsChanged(stationary)
+      stationaryWatchHandle = reactiveUtils.watch(
+        () => !!view?.stationary,
+        (stationary: boolean) => {
+          if (stationary && view) {
+            callbacks.onBoundsChanged(stationary)
+          }
         }
-      }
-    )
+      )
 
       // Handle click events
       view.on('click', async (event) => {

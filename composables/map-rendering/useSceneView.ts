@@ -116,6 +116,10 @@ export function useSceneView() {
       view.environment.atmosphereEnabled = true
       view.environment.starsEnabled = false
 
+      // Position all UI controls below search bar using view padding
+      // Search bar is at top-4 (16px) with ~60px height + gap = ~90px total
+      view.ui.padding = { top: 80, left: 16, right: 16, bottom: 16 }
+
       // Watch for stationary state (map stopped moving)
       stationaryWatchHandle = reactiveUtils.watch(
         () => Boolean(view?.stationary),
