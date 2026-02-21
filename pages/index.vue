@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
 import ProgressSpinner from 'primevue/progressspinner'
-import { VenueErrorCode } from '~/composables/useVenues'
+import { VenueErrorCode } from '~/shared/enums'
 
 enum ToastSeverity {
   ERROR = 'error',

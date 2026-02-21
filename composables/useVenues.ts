@@ -15,8 +15,6 @@ import { useVenue } from './useVenue'
 
 const MAX_BBOX_DEGREES = 0.05
 
-export { VenueErrorCode }
-
 /**
  * Convert API venue response to Venue model
  * Stores i18n keys as reason — translated at the view layer via $t()
