@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DatePicker from 'primevue/datepicker'
 import { ref, watch } from 'vue'
-import type { VenueFilters } from '~/stores/venues'
+import type { VenueFilters } from '~/shared/types'
 
 interface Props {
   selectedDateTime: Date

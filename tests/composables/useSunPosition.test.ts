@@ -10,7 +10,7 @@ const {
   isAboveHorizon
 } = useSunPosition()
 
-describe('SunPosition Model', () => {
+describe('useSunPosition Composable', () => {
   describe('create', () => {
     it('should create sun position', () => {
       const position = create(1.5, 0.5, new Date())

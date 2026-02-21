@@ -4,6 +4,7 @@ import Drawer from 'primevue/drawer'
 import ProgressSpinner from 'primevue/progressspinner'
 import { ref } from 'vue'
 import { VenueErrorCode } from '~/composables/useVenues'
+import type { Venue } from '~/shared/types'
 
 enum ToastSeverity {
   ERROR = 'error',
@@ -179,7 +180,7 @@ async function onLocateMe(): Promise<void> {
         :venues="filteredVenues"
         :selected-venue-id="selectedVenueId"
         :loading="loading"
-        @venue-select="(v) => { handleVenueSelect(v); showVenuesDrawer = false }"
+        @venue-select="(venue: Venue) => { handleVenueSelect(venue); showVenuesDrawer = false }"
       />
     </Drawer>
 

@@ -14,7 +14,7 @@ const {
   isSunny
 } = useSunlightStatus()
 
-describe('SunlightStatus Model', () => {
+describe('useSunlightStatus Composable', () => {
   describe('create', () => {
     it('should create sunlight status', () => {
       const status = create(SunlightStatus.SUNNY, 0.8)

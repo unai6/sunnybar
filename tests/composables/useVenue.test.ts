@@ -13,7 +13,7 @@ const {
   withSunlightStatus
 } = useVenue()
 
-describe('Venue Model', () => {
+describe('useVenue Composable', () => {
   const validVenueProps = {
     id: '1',
     name: 'Test Bar',

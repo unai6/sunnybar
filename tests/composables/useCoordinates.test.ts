@@ -4,7 +4,7 @@ import { useCoordinates } from '~/composables/useCoordinates'
 const { create, toArray, toLatLng, areEqual, calculateDistance } =
   useCoordinates()
 
-describe('Coordinates Model', () => {
+describe('useCoordinates Composable', () => {
   describe('create', () => {
     it('should create coordinates with valid lat/lng', () => {
       const coords = create(40.4168, -3.7038)
