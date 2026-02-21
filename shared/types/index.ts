@@ -1,13 +1,11 @@
-/**
- * Shared types index
- * Import from ~/shared/types
- */
-
 export type * from './api'
 export type * from './bounding-box'
+export type * from './coordinates'
 export type * from './filters'
 export type * from './geolocation'
 export type * from './map'
+export type * from './sun-position'
+export type * from './sunlight-status'
+export type * from './venue'
+export type * from './venue-type'
 
-// Re-export enums from shared/enums
-export { VenueErrorCode } from '~/shared/enums'

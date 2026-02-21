@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
-import type { Venue } from '~/domain/entities/Venue'
+import { useVenue } from '~/composables/useVenue'
+import type { Venue } from '~/shared/types'
 
 interface Props {
   venue: Venue
 }
 
 const props = defineProps<Props>()
+const { isSunny } = useVenue()
 
 function openUrl(url: string | undefined): void {
   if (url) {
@@ -33,7 +35,7 @@ function openDirections(): void {
     <div
       :class="[
         'flex items-center gap-3.5 p-4 rounded-xl border',
-        venue.isSunny()
+        isSunny(venue)
           ? 'bg-gradient-to-br from-amber-100 to-amber-200 border-amber-300'
           : 'bg-gradient-to-br from-slate-100 to-slate-200 border-slate-300'
       ]"
@@ -41,16 +43,16 @@ function openDirections(): void {
       <div
         :class="[
           'w-12 h-12 rounded-xl flex items-center justify-center text-2xl',
-          venue.isSunny()
+          isSunny(venue)
             ? 'bg-amber-400/30 text-amber-700'
             : 'bg-slate-500/20 text-slate-600'
         ]"
       >
-        <i :class="venue.isSunny() ? 'pi pi-sun' : 'pi pi-cloud'" />
+        <i :class="isSunny(venue) ? 'pi pi-sun' : 'pi pi-cloud'" />
       </div>
       <div class="flex flex-col gap-0.5">
         <span class="text-lg font-bold text-slate-800">
-          {{ venue.isSunny() ? $t('venueDetail.title.currentlySunny') : $t('venueDetail.title.currentlyShaded') }}
+          {{ isSunny(venue) ? $t('venueDetail.title.currentlySunny') : $t('venueDetail.title.currentlyShaded') }}
         </span>
         <span v-if="venue.sunlightStatus" class="text-sm text-slate-500">
           {{ Math.round(venue.sunlightStatus.confidence * 100) }}% {{ $t('venueDetail.label.confidence') }}

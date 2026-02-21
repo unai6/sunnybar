@@ -1,19 +1,19 @@
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import type { Venue } from '~/domain/entities/Venue'
-import type {
-  BoundingBox,
-  MapRef,
-  VenueErrorCode,
-  VenueFilters
-} from '~/shared/types'
+import type { VenueErrorCode } from '~/shared/enums/venue-error-code'
+import type { BoundingBox, MapRef, Venue, VenueFilters } from '~/shared/types'
 import { useMapExplorerStore } from '~/stores/mapExplorer'
 
 const LOCATE_ME_ZOOM = 16
 const VENUE_SELECT_ZOOM = 17
 
+/**
+ * useMapExplorer Composable
+ * Manages map exploration state and coordinates between map, venues, and sun info
+ * This is the main orchestrator composable for the map page
+ */
 export function useMapExplorer() {
-  // Composables
+  // Other composables
   const {
     loading,
     filters,
@@ -26,10 +26,9 @@ export function useMapExplorer() {
 
   const { sunInfo, selectedDateTime, updateSunInfo, setDateTime } =
     useSunInfo()
-
   const { state: geoState, getCurrentPosition } = useGeolocation()
 
-  // Use Pinia store for framework-agnostic state management
+  // Map state from store
   const mapStore = useMapExplorerStore()
   const {
     mapCenter,
@@ -65,13 +64,19 @@ export function useMapExplorer() {
     return errorCode
   }
 
+  /**
+   * Handle bounds change from the map
+   */
   function handleBoundsChanged(bounds: BoundingBox): void {
-    mapStore.setCurrentBounds(bounds)
+    mapStore.currentBounds = bounds
 
     const { lat, lng } = getBoundsCenter(bounds)
     updateSunInfo(lat, lng, selectedDateTime.value)
   }
 
+  /**
+   * Handle date/time update
+   */
   async function handleDateTimeUpdate(
     datetime: Date
   ): Promise<VenueErrorCode | null> {
@@ -87,6 +92,9 @@ export function useMapExplorer() {
     return null
   }
 
+  /**
+   * Handle filter update
+   */
   async function handleFilterUpdate(
     newFilters: Partial<VenueFilters>
   ): Promise<VenueErrorCode | null> {
@@ -94,14 +102,21 @@ export function useMapExplorer() {
     return handleSearch()
   }
 
+  /**
+   * Handle venue click on the map
+   */
   function handleVenueClick(venue: Venue): void {
     mapRef.value?.closePopups()
-    mapStore.setSelectedVenue(venue)
-    mapStore.setShowVenueDetail(true)
+    mapStore.selectedVenue = venue
+    mapStore.selectedVenueId = venue.id
+    mapStore.showVenueDetail = true
   }
 
+  /**
+   * Handle venue selection from the list
+   */
   function handleVenueSelect(venue: Venue): void {
-    mapStore.setSelectedVenueId(venue.id)
+    mapStore.selectedVenueId = venue.id
     mapRef.value?.flyTo(
       venue.coordinates.latitude,
       venue.coordinates.longitude,
@@ -109,14 +124,14 @@ export function useMapExplorer() {
     )
   }
 
+  /**
+   * Handle "locate me" button click
+   */
   async function handleLocateMe(): Promise<void> {
     await getCurrentPosition()
     if (geoState.value.latitude && geoState.value.longitude) {
-      mapStore.setMapCenter([
-        geoState.value.latitude,
-        geoState.value.longitude
-      ])
-      mapStore.setMapZoom(LOCATE_ME_ZOOM)
+      mapStore.mapCenter = [geoState.value.latitude, geoState.value.longitude]
+      mapStore.mapZoom = LOCATE_ME_ZOOM
       mapRef.value?.flyTo(
         geoState.value.latitude,
         geoState.value.longitude,
@@ -125,7 +140,9 @@ export function useMapExplorer() {
     }
   }
 
-  // Initialization function to be called from component
+  /**
+   * Initialize the map explorer
+   */
   async function initialize(): Promise<void> {
     // Prevent re-initialization on locale change
     if (mapStore.initialized) {
@@ -135,16 +152,13 @@ export function useMapExplorer() {
     const { error } = await attempt(() => getCurrentPosition())
 
     if (!error && geoState.value.latitude && geoState.value.longitude) {
-      mapStore.setMapCenter([
-        geoState.value.latitude,
-        geoState.value.longitude
-      ])
+      mapStore.mapCenter = [geoState.value.latitude, geoState.value.longitude]
       updateSunInfo(geoState.value.latitude, geoState.value.longitude)
     } else {
       updateSunInfo(mapCenter.value[0], mapCenter.value[1])
     }
 
-    mapStore.setInitialized(true)
+    mapStore.initialized = true
   }
 
   return {

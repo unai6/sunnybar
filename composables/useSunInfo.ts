@@ -1,43 +1,58 @@
 import { storeToRefs } from 'pinia'
-import {
-    GetSunInfoUseCase
-} from '~/application/use-cases/GetSunInfoUseCase'
-import { SunCalcAdapter } from '~/infrastructure/adapters/SunCalcAdapter'
 import { useSunInfoStore } from '~/stores/sunInfo'
+import { useCoordinates } from './useCoordinates'
+import { useSunCalculator } from './useSunCalculator'
+import { useSunPosition } from './useSunPosition'
 
+/**
+ * useSunInfo Composable
+ * Manages sun information state and provides sun calculation actions
+ * Combines Pinia store for shared state with business logic
+ */
 export function useSunInfo() {
-  // Use Pinia store for framework-agnostic state management
   const store = useSunInfoStore()
   const { sunInfo, selectedDateTime, currentLocation } = storeToRefs(store)
+  const coordinates = useCoordinates()
+  const sunCalculator = useSunCalculator()
+  const sunPosition = useSunPosition()
 
-  // Create use case
-  function createUseCase(): GetSunInfoUseCase {
-    const sunCalculator = new SunCalcAdapter()
-    return new GetSunInfoUseCase(sunCalculator)
-  }
-
-  // Actions
+  /**
+   * Update sun information for a specific location and time
+   */
   function updateSunInfo(
     latitude: number,
     longitude: number,
     date?: Date
   ): void {
-    const datetime = date || selectedDateTime.value
-    const { data, error } = attemptSync(() =>
-      createUseCase().execute({ latitude, longitude, date: datetime })
-    )
+    try {
+      const datetime = date || selectedDateTime.value
+      const coords = coordinates.create(latitude, longitude)
 
-    if (error) {
-      store.setSunInfo(null)
-      return
+      const position = sunCalculator.getPosition(coords, datetime)
+      const times = sunCalculator.getSunTimes(coords, datetime)
+      const daytime = sunCalculator.isDaytime(coords, datetime)
+
+      store.sunInfo = {
+        position: {
+          azimuthDegrees: sunPosition.getAzimuthDegrees(position),
+          altitudeDegrees: sunPosition.getAltitudeDegrees(position),
+          isAboveHorizon: sunPosition.isAboveHorizon(position)
+        },
+        times,
+        isDaytime: daytime
+      }
+
+      store.currentLocation = { latitude, longitude }
+    } catch {
+      store.sunInfo = null
     }
-
-    store.setSunInfo(data)
-    store.setCurrentLocation({ latitude, longitude })
   }
 
+  /**
+   * Update the selected date/time and recalculate sun info if location is set
+   */
   function setDateTime(datetime: Date): void {
-    store.setSelectedDateTime(datetime)
+    store.selectedDateTime = datetime
 
     if (currentLocation.value) {
       updateSunInfo(
@@ -52,6 +67,7 @@ export function useSunInfo() {
     // State
     sunInfo,
     selectedDateTime,
+    currentLocation,
 
     // Actions
     updateSunInfo,

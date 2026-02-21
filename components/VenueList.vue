@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import ProgressSpinner from 'primevue/progressspinner'
 import Tag from 'primevue/tag'
-import type { Venue, VenueType } from '~/domain/entities/Venue'
+import { useVenue } from '~/composables/useVenue'
+import type { Venue, VenueType } from '~/shared/types'
 
 interface Props {
   venues: Venue[]
@@ -14,6 +15,8 @@ defineProps<Props>()
 defineEmits<{
   'venue-select': [venue: Venue]
 }>()
+
+const { isSunny } = useVenue()
 
 function getVenueIcon(type: VenueType): string {
   const icons: Record<string, string> = {
@@ -55,14 +58,14 @@ function getVenueIcon(type: VenueType): string {
         :class="[
           'flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 transition-colors duration-150',
           venue.id === selectedVenueId ? 'bg-amber-100' : 'hover:bg-gray-50',
-          venue.isSunny() ? 'border-l-[3px] border-l-amber-400' : ''
+          isSunny(venue) ? 'border-l-[3px] border-l-amber-400' : ''
         ]"
         @click="$emit('venue-select', venue)"
       >
         <div
           :class="[
             'w-9 h-9 rounded-full flex items-center justify-center shrink-0',
-            venue.isSunny() ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-500'
+            isSunny(venue) ? 'bg-amber-100 text-amber-600' : 'bg-gray-100 text-gray-500'
           ]"
         >
           <i :class="getVenueIcon(venue.type)" />
@@ -84,10 +87,10 @@ function getVenueIcon(type: VenueType): string {
               {{ $t('venueList.label.outdoor') }}
             </span>
             <div class="shrink-0">
-              <Tag :severity="venue.isSunny() ? 'info' : 'secondary'">
+              <Tag :severity="isSunny(venue) ? 'info' : 'secondary'">
                 <template #default>
-                  <i :class="[venue.isSunny() ? 'pi pi-sun' : 'pi pi-cloud', 'mr-1']" />
-                  {{ venue.isSunny() ? $t('venueList.status.sunny') : $t('venueList.status.shaded') }}
+                  <i :class="[isSunny(venue) ? 'pi pi-sun' : 'pi pi-cloud', 'mr-1']" />
+                  {{ isSunny(venue) ? $t('venueList.status.sunny') : $t('venueList.status.shaded') }}
                 </template>
               </Tag>
             </div>

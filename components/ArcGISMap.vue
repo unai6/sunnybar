@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue'
-import type { Venue } from '~/domain/entities/Venue'
+import { useVenue } from '~/composables/useVenue'
+import type { Venue } from '~/shared/types'
 
 interface Props {
   venues: Venue[]
@@ -15,6 +16,8 @@ const emit = defineEmits<{
   'bounds-changed': [bounds: { south: number; west: number; north: number; east: number }]
   'venue-click': [venue: Venue]
 }>()
+
+const { isSunny } = useVenue()
 
 // Constants
 const MIN_ZOOM = 10
@@ -154,11 +157,11 @@ function updateVenueMarkers(): void {
   props.venues.forEach(venue => {
     currentVenueIds.add(venue.id)
     
-    const isSunny = venue.isSunny()
+    const sunny = isSunny(venue)
     const existingGraphic = existingGraphics.get(venue.id)
 
     // Check if graphic needs update
-    if (existingGraphic && existingGraphic.attributes.isSunny === isSunny) {
+    if (existingGraphic && existingGraphic.attributes.isSunny === sunny) {
       // No change needed, keep existing graphic
       return
     }
@@ -174,7 +177,7 @@ function updateVenueMarkers(): void {
       latitude: venue.coordinates.latitude
     })
 
-    const symbol = isSunny ? createSunnySymbol() : createShadedSymbol()
+    const symbol = sunny ? createSunnySymbol() : createShadedSymbol()
     if (!symbol) return
 
     const graphic = new Graphic({
@@ -184,7 +187,7 @@ function updateVenueMarkers(): void {
         id: venue.id,
         name: venue.name,
         type: venue.type,
-        isSunny,
+        isSunny: sunny,
         address: venue.address,
         outdoor_seating: venue.outdoor_seating
       }
@@ -233,9 +236,10 @@ async function initializeMap(): Promise<void> {
     await view.when()
 
     stationaryWatchHandle = reactiveUtils.watch(
-      () => view?.stationary,
+      () => Boolean(view?.stationary),
       (stationary: boolean) => {
-        if (stationary && view) emitBounds()
+        if (stationary && view)
+          emitBounds()
       }
     )
 

@@ -1,39 +1,36 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
 
+export interface SunInfo {
+  position: {
+    azimuthDegrees: number;
+    altitudeDegrees: number;
+    isAboveHorizon: boolean;
+  };
+  times: {
+    sunrise: Date;
+    sunset: Date;
+    solarNoon: Date;
+    goldenHour: Date;
+  };
+  isDaytime: boolean;
+}
+
+/**
+ * Sun Info Store
+ * Holds shared state for sun information across the app
+ * Business logic is handled in the useSunInfo composable
+ */
 export const useSunInfoStore = defineStore('sunInfo', () => {
-  // State
-  const sunInfo = ref<GetSunInfoResult | null>(null)
+  const sunInfo = ref<SunInfo | null>(null)
   const selectedDateTime = ref<Date>(new Date())
   const currentLocation = ref<{ latitude: number; longitude: number } | null>(
     null
   )
 
-  // Actions
-  function setSunInfo(info: GetSunInfoResult | null) {
-    sunInfo.value = info
-  }
-
-  function setSelectedDateTime(datetime: Date) {
-    selectedDateTime.value = datetime
-  }
-
-  function setCurrentLocation(
-    location: { latitude: number; longitude: number } | null
-  ) {
-    currentLocation.value = location
-  }
-
   return {
-    // State
     sunInfo,
     selectedDateTime,
-    currentLocation,
-
-    // Actions
-    setSunInfo,
-    setSelectedDateTime,
-    setCurrentLocation
+    currentLocation
   }
 })

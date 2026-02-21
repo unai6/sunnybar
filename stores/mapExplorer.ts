@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { Venue } from '~/domain/entities/Venue'
-import type { BoundingBox } from '~/shared/types'
+import type { BoundingBox, Venue } from '~/shared/types'
 
 const DEFAULT_CENTER: [number, number] = [41.39, 2.1] // Barcelona
 const DEFAULT_ZOOM = 15
 
+/**
+ * Map Explorer Store
+ * Holds shared state for map exploration across the app
+ * Business logic is handled in the useMapExplorer composable
+ */
 export const useMapExplorerStore = defineStore('mapExplorer', () => {
-  // State
   const initialized = ref(false)
   const mapCenter = ref<[number, number]>(DEFAULT_CENTER)
   const mapZoom = ref(DEFAULT_ZOOM)
@@ -16,50 +19,13 @@ export const useMapExplorerStore = defineStore('mapExplorer', () => {
   const selectedVenue = ref<Venue | null>(null)
   const showVenueDetail = ref(false)
 
-  // Actions
-  function setMapCenter(center: [number, number]) {
-    mapCenter.value = center
-  }
-
-  function setMapZoom(zoom: number) {
-    mapZoom.value = zoom
-  }
-
-  function setCurrentBounds(bounds: BoundingBox | null) {
-    currentBounds.value = bounds
-  }
-
-  function setSelectedVenueId(id: string | null) {
-    selectedVenueId.value = id
-  }
-
-  function setSelectedVenue(venue: Venue | null) {
-    selectedVenue.value = venue
-  }
-
-  function setShowVenueDetail(show: boolean) {
-    showVenueDetail.value = show
-  }
-  function setInitialized(value: boolean) {
-    initialized.value = value
-  }
   return {
-    // State
     initialized,
     mapCenter,
     mapZoom,
     currentBounds,
     selectedVenueId,
     selectedVenue,
-    showVenueDetail,
-
-    // Actions
-    setInitialized,
-    setMapCenter,
-    setMapZoom,
-    setCurrentBounds,
-    setSelectedVenueId,
-    setSelectedVenue,
-    setShowVenueDetail
+    showVenueDetail
   }
 })

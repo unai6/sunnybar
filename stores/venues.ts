@@ -1,10 +1,16 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { Venue } from '~/domain/entities/Venue'
-import type { BoundingBox, VenueFilters } from '~/shared/types'
+import { useVenue } from '~/composables/useVenue'
+import type { BoundingBox, Venue, VenueFilters } from '~/shared/types'
 
+/**
+ * Venues Store
+ * Holds shared state for venues across the app
+ * Business logic is handled in the useVenues composable
+ */
 export const useVenuesStore = defineStore('venues', () => {
-  // State
+  const venue = useVenue()
+
   const venues = ref<Venue[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -14,64 +20,35 @@ export const useVenuesStore = defineStore('venues', () => {
     onlyWithOutdoorSeating: false
   })
 
-  // Getters
-  const sunnyVenues = computed(() => venues.value.filter((v) => v.isSunny()))
-
-  const shadedVenues = computed(() => venues.value.filter((v) => !v.isSunny()))
-
+  // Computed values for convenience
+  const sunnyVenues = computed(() =>
+    venues.value.filter((v) => venue.isSunny(v))
+  )
+  const shadedVenues = computed(() =>
+    venues.value.filter((v) => !venue.isSunny(v))
+  )
   const filteredVenues = computed(() => {
     let result = venues.value
 
     if (filters.value.onlySunny) {
-      result = result.filter((v) => v.isSunny())
+      result = result.filter((v) => venue.isSunny(v))
     }
 
     if (filters.value.onlyWithOutdoorSeating) {
-      result = result.filter((v) => v.hasOutdoorSeating())
+      result = result.filter((v) => venue.hasOutdoorSeating(v))
     }
 
     return result
   })
 
-  // Actions
-  function setVenues(newVenues: Venue[]) {
-    venues.value = newVenues
-  }
-
-  function setLoading(value: boolean) {
-    loading.value = value
-  }
-
-  function setError(value: string | null) {
-    error.value = value
-  }
-
-  function setLastBbox(bbox: BoundingBox | null) {
-    lastBbox.value = bbox
-  }
-
-  function setFilters(newFilters: Partial<VenueFilters>) {
-    filters.value = { ...filters.value, ...newFilters }
-  }
-
   return {
-    // State
     venues,
     loading,
     error,
     lastBbox,
     filters,
-
-    // Getters
     sunnyVenues,
     shadedVenues,
-    filteredVenues,
-
-    // Actions
-    setVenues,
-    setLoading,
-    setError,
-    setLastBbox,
-    setFilters
+    filteredVenues
   }
 })

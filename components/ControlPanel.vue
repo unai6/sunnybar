@@ -4,15 +4,15 @@ import Checkbox from 'primevue/checkbox'
 import DatePicker from 'primevue/datepicker'
 import Tag from 'primevue/tag'
 import { ref, watch } from 'vue'
-import type { GetSunInfoResult } from '~/application/use-cases/GetSunInfoUseCase'
 import type { VenueFilters } from '~/shared/types'
+import type { SunInfo } from '~/stores/sunInfo'
 
 interface Props {
   loading: boolean
   venuesCount: number
   sunnyCount: number
   shadedCount: number
-  sunInfo: GetSunInfoResult | null
+  sunInfo: SunInfo | null
   selectedDateTime: Date
   filters: VenueFilters
   hideSearchSection?: boolean
