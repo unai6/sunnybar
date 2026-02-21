@@ -21,9 +21,11 @@ const emit = defineEmits<{
     <div class="grid grid-cols-3 gap-1 p-1.5">
       <SearchButton
         :loading="loading"
+        variant="mobile"
         @search="emit('search')"
       />
       <LocateButton
+        variant="mobile"
         @locate="emit('locate')"
       />
       <VenuesButton

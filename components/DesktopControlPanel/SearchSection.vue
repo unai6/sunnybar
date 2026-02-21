@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import Button from 'primevue/button'
-
 type Props = {
   loading: boolean
 }
@@ -19,21 +17,16 @@ defineEmits<{
       <i class="pi pi-search text-gray-500" />
       {{ $t('controlPanel.title.searchArea') }}
     </h3>
-    <Button
-      :label="$t('controlPanel.button.searchThisArea')"
-      icon="pi pi-refresh"
+    <SearchButton
       :loading="loading"
-      class="w-full"
-      severity="warning"
-      @click="$emit('search')"
+      variant="desktop"
+      @search="$emit('search')"
     />
-    <Button
-      :label="$t('controlPanel.button.useMyLocation')"
-      icon="pi pi-map-marker"
-      class="w-full mt-2"
-      severity="secondary"
-      outlined
-      @click="$emit('locate-me')"
-    />
+    <div class="mt-2">
+      <LocateButton
+        variant="desktop"
+        @locate="$emit('locate-me')"
+      />
+    </div>
   </div>
 </template>

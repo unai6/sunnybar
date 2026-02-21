@@ -79,10 +79,10 @@ async function onLocateMe(): Promise<void> {
   const { error } = await attempt(() => handleLocateMe())
   if (error) {
     console.error('Geolocation error:', error)
-    
+
     // Determine the specific error message based on error type
     let errorKey = 'toast.error.geolocation'
-    
+
     // Check if error has a code property (GeolocationPositionError)
     if ('code' in error && typeof error.code === 'number') {
       const errorCode = error.code
@@ -94,7 +94,7 @@ async function onLocateMe(): Promise<void> {
         errorKey = 'toast.error.geolocationTimeout'
       }
     }
-    
+
     toast.add({
       severity: ToastSeverity.ERROR,
       summary: t('toast.error.title'),
@@ -129,7 +129,7 @@ async function onLocateMe(): Promise<void> {
     />
 
     <!-- Desktop Layout -->
-    <div class="h-full lg:grid lg:grid-cols-[320px_1fr_300px] gap-0">
+    <div class="h-full lg:grid lg:grid-cols-[260px_1fr_230px] gap-0">
       <!-- Control Panel (desktop only) -->
       <aside class="hidden lg:block border-r border-gray-200 overflow-y-auto" aria-label="Search controls">
         <ControlPanel
