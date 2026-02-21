@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useMapBounds } from '~/composables/map-interaction/useMapBounds'
 import { useArcGISModules } from '~/composables/map-rendering/useArcGISModules'
 import { useMapView } from '~/composables/map-rendering/useMapView'
@@ -8,8 +7,6 @@ import { useVenueMarkers } from '~/composables/venue-visualization/useVenueMarke
 import { useVenueSymbols } from '~/composables/venue-visualization/useVenueSymbols'
 import type { Venue } from '~/shared/types'
 import { attempt } from '~/utils/attempt'
-import MapLegend from './MapLegend.vue'
-import MapLoadingOverlay from './MapLoadingOverlay.vue'
 
 type Props = {
   venues: Venue[]
@@ -151,7 +148,6 @@ watch(
 <template>
   <div class="w-full h-full min-h-[400px] relative">
     <div ref="mapContainer" class="w-full h-full" />
-
     <MapLegend />
     <MapLoadingOverlay :is-loading="mapView.isLoading.value" />
   </div>

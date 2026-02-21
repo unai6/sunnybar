@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
-import BaseDatePicker from '~/components/Base/BaseDatePicker.vue'
-import { ref, watch } from 'vue'
 
 type Props = {
   selectedDateTime: Date

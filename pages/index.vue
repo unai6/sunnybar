@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import Drawer from 'primevue/drawer'
 import ProgressSpinner from 'primevue/progressspinner'
-import { ref } from 'vue'
-import ArcGISMap from '~/components/Map/ArcGISMap.vue'
-import VenueDetail from '~/components/Venues/VenueDetail.vue'
-import VenueList from '~/components/Venues/VenueList.vue'
 import { VenueErrorCode } from '~/composables/useVenues'
-import type { Venue } from '~/shared/types'
 
 enum ToastSeverity {
   ERROR = 'error',
@@ -98,94 +92,25 @@ async function onLocateMe(): Promise<void> {
 <template>
   <div class="relative h-full">
     <!-- Mobile Top Bar -->
-    <div
-      class="lg:hidden fixed top-0 left-0 right-0 z-[300] bg-white/95 backdrop-blur-sm border-b border-gray-200 px-3 py-1.5"
-      style="padding-top: calc(0.375rem + env(safe-area-inset-top, 0px))"
-    >
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-1.5">
-          <i class="pi pi-sun text-base text-amber-500" />
-          <span class="text-sm font-bold bg-gradient-to-br from-amber-500 to-amber-600 bg-clip-text text-transparent">
-            SunBar
-          </span>
-          <span class="text-[9px] text-gray-400 ml-1">v1.0.0</span>
-        </div>
-        <LocaleSwitcher />
-      </div>
-    </div>
+    <MobileTopBar />
 
     <!-- Mobile Bottom Action Bar -->
-    <div
-      class="lg:hidden fixed bottom-0 left-0 right-0 z-[300] bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]"
-      style="padding-bottom: env(safe-area-inset-bottom, 0px)"
-    >
-      <div class="grid grid-cols-3 gap-1 p-1.5">
-        <!-- Search Area Button -->
-        <button
-          :disabled="loading"
-          class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg transition-all duration-200 active:scale-95 disabled:opacity-50"
-          :class="loading ? 'bg-gray-100 text-gray-400' : 'bg-amber-500 text-white active:bg-amber-600'"
-          @click="handleSearch"
-        >
-          <i :class="loading ? 'pi pi-spin pi-spinner text-base' : 'pi pi-refresh text-base'" />
-          <span class="text-[10px] mt-0.5 font-medium">{{ $t('controlPanel.mobile.search') }}</span>
-        </button>
-
-        <!-- Locate Me Button -->
-        <button
-          class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200"
-          @click="onLocateMe"
-        >
-          <i class="pi pi-map-marker text-base" />
-          <span class="text-[10px] mt-0.5">{{ $t('controlPanel.mobile.locate') }}</span>
-        </button>
-
-        <!-- Venues List Button -->
-        <button
-          class="flex flex-col items-center justify-center py-1.5 px-1 rounded-lg text-gray-700 transition-all duration-200 hover:bg-gray-100 active:scale-95 active:bg-gray-200 relative"
-          @click="showVenuesDrawer = true"
-        >
-          <i class="pi pi-list text-base" />
-          <span class="text-[10px] mt-0.5">{{ $t('controlPanel.mobile.venues') }}</span>
-          <span
-            v-if="filteredVenues.length > 0"
-            class="absolute top-0.5 right-0.5 bg-amber-500 text-white text-[9px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1"
-          >
-            {{ filteredVenues.length > 99 ? '99+' : filteredVenues.length }}
-          </span>
-        </button>
-      </div>
-    </div>
+    <MobileBottomActionBar
+      :loading="loading"
+      :venues-count="filteredVenues.length"
+      @search="handleSearch"
+      @locate="onLocateMe"
+      @show-venues="showVenuesDrawer = true"
+    />
 
     <!-- Mobile Venues Bottom Drawer -->
-    <Drawer
+    <MobileVenuesDrawer
       v-model:visible="showVenuesDrawer"
-      position="bottom"
-      class="lg:hidden !h-full"
-      :show-close-icon="false"
-    >
-      <template #header>
-        <div class="flex items-center justify-between w-full">
-          <h2 class="text-lg font-semibold flex items-center gap-2">
-            <i class="pi pi-list text-amber-500" />
-            {{ $t('venueList.title.nearbyVenues') }}
-            <span class="text-sm text-gray-500">({{ filteredVenues.length }})</span>
-          </h2>
-          <button
-            class="flex items-center justify-center w-8 h-8 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
-            @click="showVenuesDrawer = false"
-          >
-            <i class="pi pi-times" />
-          </button>
-        </div>
-      </template>
-      <VenueList
-        :venues="filteredVenues"
-        :selected-venue-id="selectedVenueId"
-        :loading="loading"
-        @venue-select="(venue: Venue) => { handleVenueSelect(venue); showVenuesDrawer = false }"
-      />
-    </Drawer>
+      :venues="filteredVenues"
+      :selected-venue-id="selectedVenueId"
+      :loading="loading"
+      @venue-select="handleVenueSelect"
+    />
 
     <!-- Desktop Layout -->
     <div class="h-full lg:grid lg:grid-cols-[320px_1fr_300px] gap-0">

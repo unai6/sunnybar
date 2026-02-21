@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
-import { computed, ref, watch } from 'vue'
-import BaseDatePicker from '~/components/Base/BaseDatePicker.vue'
 import type { VenueFilters } from '~/shared/types'
 
 type Props = {

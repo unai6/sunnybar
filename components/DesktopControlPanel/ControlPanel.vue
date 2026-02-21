@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import type { VenueFilters } from '~/shared/types'
 import type { SunInfo } from '~/stores/sunInfo'
-import DateTimeSelector from './DateTimeSelector.vue'
-import SearchSection from './SearchSection.vue'
-import SunInfoDisplay from './SunInfoDisplay.vue'
-import VenueFiltersComponent from './VenueFilters.vue'
-import VenueStats from './VenueStats.vue'
 
 type Props = {
   loading: boolean

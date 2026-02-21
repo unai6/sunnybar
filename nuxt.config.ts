@@ -125,8 +125,14 @@ export default defineNuxtConfig({
     preset: 'netlify'
   },
 
-  // Ensure ArcGIS works with SSR disabled for the map component
-  ssr: false,
+  ssr: true,
 
-  compatibilityDate: '2024-09-01'
+  compatibilityDate: '2024-09-01',
+
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false
+    }
+  ]
 })
