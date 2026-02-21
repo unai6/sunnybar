@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Button from 'primevue/button'
 
-interface Props {
+type Props = {
   loading: boolean
 }
 

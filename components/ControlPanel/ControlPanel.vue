@@ -7,7 +7,7 @@ import SunInfoDisplay from './SunInfoDisplay.vue'
 import VenueFiltersComponent from './VenueFilters.vue'
 import VenueStats from './VenueStats.vue'
 
-interface Props {
+type Props = {
   loading: boolean
   venuesCount: number
   sunnyCount: number

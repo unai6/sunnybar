@@ -3,7 +3,7 @@ import DatePicker from 'primevue/datepicker'
 import { ref, watch } from 'vue'
 import type { VenueFilters } from '~/shared/types'
 
-interface Props {
+type Props = {
   selectedDateTime: Date
   filters: VenueFilters
   sunnyCount: number

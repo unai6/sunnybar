@@ -1,5 +1,5 @@
 <script setup lang="ts">
-interface Props {
+type Props = {
   venuesCount: number
   sunnyCount: number
   shadedCount: number

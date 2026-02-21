@@ -11,7 +11,7 @@ import { attempt } from '~/utils/attempt'
 import MapLegend from './MapLegend.vue'
 import MapLoadingOverlay from './MapLoadingOverlay.vue'
 
-interface Props {
+type Props = {
   venues: Venue[]
   center: [number, number]
   zoom: number

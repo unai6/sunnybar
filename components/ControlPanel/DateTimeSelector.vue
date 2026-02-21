@@ -3,7 +3,7 @@ import Button from 'primevue/button'
 import DatePicker from 'primevue/datepicker'
 import { ref, watch } from 'vue'
 
-interface Props {
+type Props = {
   selectedDateTime: Date
 }
 

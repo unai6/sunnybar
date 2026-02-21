@@ -3,7 +3,7 @@ import Checkbox from 'primevue/checkbox'
 import { ref, watch } from 'vue'
 import type { VenueFilters } from '~/shared/types'
 
-interface Props {
+type Props = {
   filters: VenueFilters
 }
 

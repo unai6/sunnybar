@@ -3,7 +3,7 @@ import Button from 'primevue/button'
 import { useVenue } from '~/composables/useVenue'
 import type { Venue } from '~/shared/types'
 
-interface Props {
+type Props = {
   venue: Venue
 }
 

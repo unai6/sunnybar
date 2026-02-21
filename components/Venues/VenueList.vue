@@ -4,7 +4,7 @@ import Tag from 'primevue/tag'
 import { useVenue } from '~/composables/useVenue'
 import type { Venue, VenueType } from '~/shared/types'
 
-interface Props {
+type Props = {
   venues: Venue[]
   selectedVenueId: string | null
   loading: boolean

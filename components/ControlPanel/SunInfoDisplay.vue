@@ -2,7 +2,7 @@
 import Tag from 'primevue/tag'
 import type { SunInfo } from '~/stores/sunInfo'
 
-interface Props {
+type Props = {
   sunInfo: SunInfo | null
 }
 
