@@ -2,18 +2,18 @@
  * Overpass API utility with server-side caching and retry logic
  */
 
-export interface OverpassElement {
-  type: string;
-  id: number;
-  lat?: number;
-  lon?: number;
-  center?: { lat: number; lon: number };
-  geometry?: Array<{ lat: number; lon: number }>;
-  tags?: Record<string, string>;
+export type OverpassElement = {
+  type: string
+  id: number
+  lat?: number
+  lon?: number
+  center?: { lat: number; lon: number }
+  geometry?: Array<{ lat: number; lon: number }>
+  tags?: Record<string, string>
 }
 
-export interface OverpassResponse {
-  elements: OverpassElement[];
+export type OverpassResponse = {
+  elements: OverpassElement[]
 }
 
 // Multiple Overpass API endpoints for failover
@@ -62,8 +62,7 @@ async function makeOverpassRequest(
   query: string
 ): Promise<Response> {
   const controller = new AbortController()
-  // Reduced timeout to 20s for faster failover to next endpoint
-  const timeoutId = setTimeout(() => controller.abort(), 5000)
+  const timeoutId = setTimeout(() => controller.abort(), 2000)
 
   try {
     const response = await fetch(endpoint, {

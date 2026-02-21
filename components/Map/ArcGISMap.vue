@@ -81,6 +81,11 @@ function handleVenueClick(venueId: string): void {
   }
 }
 
+function handlePlaceSelected(event: { latitude: number; longitude: number; name: string }): void {
+  // Fly to the selected place with a comfortable zoom level
+  currentView.value.flyTo(event.latitude, event.longitude, 16)
+}
+
 // Initialize map
 async function initializeMap(): Promise<void> {
   if (!mapContainerRef.value) return
@@ -208,9 +213,28 @@ watch(viewMode, async () => {
 
 <template>
   <div class="w-full h-full min-h-[400px] relative">
-    <div ref="mapContainer" class="w-full h-full" />
-    <MapViewToggle />
+    <div ref="mapContainer" class="w-full h-full arcgis-map-container" />
+
+    <!-- Top Bar with Search and View Toggle -->
+    <div class="absolute top-4 left-4 right-4 z-[200] flex items-center gap-2">
+      <div class="flex-1 lg:flex-none lg:w-full lg:max-w-md lg:mx-auto">
+        <MapSearchBar @place-selected="handlePlaceSelected" />
+      </div>
+      <div class="flex-shrink-0">
+        <MapViewToggle />
+      </div>
+    </div>
+
     <MapLegend />
     <MapLoadingOverlay :is-loading="isLoading" />
   </div>
 </template>
+
+<style scoped>
+/* Hide zoom controls on mobile */
+@media (max-width: 1023px) {
+  .arcgis-map-container :deep(.esri-ui-top-left .esri-zoom) {
+    display: none;
+  }
+}
+</style>

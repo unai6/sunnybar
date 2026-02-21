@@ -9,12 +9,17 @@ import {
   type Venue
 } from '~/server/utils/shadow'
 import { calculateSunPosition } from '~/server/utils/sun'
+import {
+  bulkUpsertVenuesFromOverpass,
+  findVenuesInBounds,
+  hasCachedData
+} from '~/server/utils/db/venues'
 
 /**
  * GET /api/venues
  *
  * Fetches venues with sun/shadow analysis for a bounding box.
- * Results are cached for 5 minutes per unique bbox.
+ * Uses hybrid approach: DB cache first, fallback to Overpass
  *
  * Query params:
  * - south: southern latitude
@@ -22,6 +27,7 @@ import { calculateSunPosition } from '~/server/utils/sun'
  * - north: northern latitude
  * - east: eastern longitude
  * - datetime: ISO timestamp (optional, defaults to now)
+ * - fresh: boolean (optional, force Overpass fetch)
  */
 export default defineCachedEventHandler(
   async (event) => {
@@ -32,6 +38,7 @@ export default defineCachedEventHandler(
     const west = Number.parseFloat(query.west as string)
     const north = Number.parseFloat(query.north as string)
     const east = Number.parseFloat(query.east as string)
+    const forceFresh = query.fresh === 'true'
 
     if (
       Number.isNaN(south) ||
@@ -69,24 +76,77 @@ export default defineCachedEventHandler(
     }
     const datetime = parsedDate ?? new Date()
 
-    // Fetch venues and buildings in a single combined query (faster)
-    const response = await executeOverpassQuery(
-      buildCombinedQuery(south, west, north, east)
-    )
+    const bounds = { south, west, north, east }
 
-    // Parse response: filter elements by type
-    const venueElements = response.elements.filter(
-      (el) => el.type === 'node' && el.tags?.amenity
-    )
-    const buildingElements = response.elements.filter(
-      (el) => el.type === 'way' && el.tags?.building
-    )
+    // HYBRID FLOW: Check DB first (Option A)
+    let venues: Venue[] = []
+    let buildings: Building[] = []
+    let dataSource = 'cache'
 
-    const venues = parseVenues(venueElements)
-    const buildings = parseBuildings(buildingElements)
+    // Try to get cached data from DB if not forcing fresh
+    if (!forceFresh) {
+      const hasCache = await hasCachedData(bounds, 7) // 7 days cache
+      if (hasCache) {
+        console.info('[API] Using cached venues from DB')
+        const cachedVenues = await findVenuesInBounds(bounds)
+
+        // Convert DB venues to API format
+        venues = cachedVenues.map((v) => ({
+          id: v.venueId,
+          name: v.name,
+          type: v.venueType,
+          latitude: v.latitude,
+          longitude: v.longitude,
+          outdoor_seating: v.outdoorSeating,
+          address: v.address?.formatted,
+          sunlightStatus: undefined // Will be calculated below
+        }))
+
+        dataSource = 'db-cache'
+      }
+    }
+
+    // Fetch from Overpass if no cache or forced fresh
+    if (venues.length === 0 || forceFresh) {
+      console.info('[API] Fetching fresh data from Overpass')
+      dataSource = 'overpass'
+
+      // Fetch venues and buildings in a single combined query
+      const response = await executeOverpassQuery(
+        buildCombinedQuery(south, west, north, east)
+      )
+
+      // Parse response: filter elements by type
+      const venueElements = response.elements.filter(
+        (el) => el.type === 'node' && el.tags?.amenity
+      )
+      const buildingElements = response.elements.filter(
+        (el) => el.type === 'way' && el.tags?.building
+      )
+
+      venues = parseVenues(venueElements)
+      buildings = parseBuildings(buildingElements)
+
+      // Save to DB asynchronously (don't wait)
+      if (venues.length > 0) {
+        bulkUpsertVenuesFromOverpass(
+          venues.map((v) => ({
+            osmId: v.id,
+            osmType: 'node',
+            name: v.name,
+            venueType: v.type,
+            latitude: v.latitude,
+            longitude: v.longitude,
+            outdoorSeating: v.outdoor_seating
+          }))
+        ).catch((error) => {
+          console.error('[API] Failed to save venues to DB:', error)
+        })
+      }
+    }
 
     console.info(
-      `[API] Processed ${venues.length} venues, ${buildings.length} buildings`
+      `[API] Processed ${venues.length} venues from ${dataSource}, ${buildings.length} buildings`
     )
 
     // Calculate sun position for the center of bbox
@@ -94,7 +154,7 @@ export default defineCachedEventHandler(
     const centerLon = (west + east) / 2
     const sunPosition = calculateSunPosition(centerLat, centerLon, datetime)
 
-    // Analyze shadow for each venue
+    // Analyze shadow for each venue (always real-time based on current datetime)
     const venuesWithShadow: Venue[] = venues.map((venue) => ({
       ...venue,
       sunlightStatus: analyzeVenueShadow(
@@ -108,7 +168,7 @@ export default defineCachedEventHandler(
     // Set compression hint for faster response
     setResponseHeader(event, 'Content-Type', 'application/json')
 
-    // Return venues with shadow analysis only (no ArcGIS enrichment)
+    // Return venues with shadow analysis
     return {
       venues: venuesWithShadow,
       sunPosition: {
@@ -119,7 +179,8 @@ export default defineCachedEventHandler(
       meta: {
         timestamp: datetime.toISOString(),
         buildingsAnalyzed: buildings.length,
-        venueCount: venues.length
+        venueCount: venues.length,
+        dataSource
       }
     }
   },

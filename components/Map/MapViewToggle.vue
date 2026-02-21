@@ -12,13 +12,11 @@ function toggleView() {
 </script>
 
 <template>
-  <div class="absolute top-4 right-4 z-100">
-    <Button
-      :icon="viewMode === '2d' ? 'pi pi-box' : 'pi pi-map'"
-      :label="viewMode === '2d' ? $t('map.button.view3d') : $t('map.button.view2d')"
-      :severity="viewMode === '3d' ? 'secondary' : 'info'"
-      size="small"
-      @click="toggleView"
-    />
-  </div>
+  <Button
+    :icon="viewMode === '2d' ? 'pi pi-box' : 'pi pi-map'"
+    :label="viewMode === '2d' ? $t('map.button.view3d') : $t('map.button.view2d')"
+    :severity="viewMode === '3d' ? 'secondary' : 'info'"
+    size="small"
+    @click="toggleView"
+  />
 </template>

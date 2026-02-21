@@ -120,6 +120,10 @@
       "shaded": "Shaded",
       "partiallySunny": "Partially Sunny"
     },
+    "search": {
+      "placeholder": "Search place (e.g. \"La Rambla Barcelona\")",
+      "noResults": "No results found"
+    },
     "message": {
       "loadingMap": "Loading map...",
       "outdoorSeating": "Outdoor seating"

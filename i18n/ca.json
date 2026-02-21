@@ -120,6 +120,10 @@
       "shaded": "A l'ombra",
       "partiallySunny": "Parcialment Assolellat"
     },
+    "search": {
+      "placeholder": "Cercar lloc (p.ex. \"La Rambla Barcelona\")",
+      "noResults": "No s'han trobat resultats"
+    },
     "message": {
       "loadingMap": "Carregant mapa...",
       "outdoorSeating": "Terrassa exterior"
