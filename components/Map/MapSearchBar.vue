@@ -60,6 +60,7 @@ function handleClear(): void {
       option-label="name"
       :placeholder="$t('map.search.placeholder')"
       :loading="isSearching"
+      show-clear
       :min-length="2"
       append-to="self"
       fluid
