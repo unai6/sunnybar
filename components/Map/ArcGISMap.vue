@@ -4,6 +4,7 @@ import { useMapBounds } from '~/composables/map-interaction/useMapBounds'
 import { useArcGISModules } from '~/composables/map-rendering/useArcGISModules'
 import { useMapView } from '~/composables/map-rendering/useMapView'
 import { useSceneView } from '~/composables/map-rendering/useSceneView'
+import { useUserLocationMarker } from '~/composables/map-rendering/useUserLocationMarker'
 import { useVenue } from '~/composables/useVenue'
 import { useVenueMarkers } from '~/composables/venue-visualization/useVenueMarkers'
 import { useVenueSymbols } from '~/composables/venue-visualization/useVenueSymbols'
@@ -34,7 +35,7 @@ const mapViewStore = useMapViewStore()
 const { viewMode } = storeToRefs(mapViewStore)
 
 // Refs
-const mapContainer = ref<HTMLDivElement | null>(null)
+const mapContainerRef = useTemplateRef<HTMLDivElement | null>('mapContainer')
 const currentView = computed(() => viewMode.value === '2d' ? mapView : sceneView)
 const isLoading = computed(() => currentView.value.isLoading.value)
 
@@ -42,6 +43,7 @@ const isLoading = computed(() => currentView.value.isLoading.value)
 let arcGISModules: Awaited<ReturnType<typeof loadModules>> | null = null
 let venueSymbols: ReturnType<typeof useVenueSymbols> | null = null
 let venueMarkers: ReturnType<typeof useVenueMarkers> | null = null
+let userLocationMarker: ReturnType<typeof useUserLocationMarker> | null = null
 let mapBounds: ReturnType<typeof useMapBounds> | null = null
 
 // Expose methods for parent component
@@ -51,6 +53,15 @@ defineExpose({
   },
   closePopups: () => {
     currentView.value.closePopups()
+  },
+  setUserLocation: (lat: number, lng: number) => {
+    if (userLocationMarker) {
+      userLocationMarker.setUserLocation(
+        currentView.value.getVenueGraphicsLayer(),
+        lat,
+        lng
+      )
+    }
   }
 })
 
@@ -72,7 +83,7 @@ function handleVenueClick(venueId: string): void {
 
 // Initialize map
 async function initializeMap(): Promise<void> {
-  if (!mapContainer.value) return
+  if (!mapContainerRef.value) return
 
   const { error } = await attempt(async () => {
     // Load ArcGIS modules
@@ -87,6 +98,11 @@ async function initializeMap(): Promise<void> {
       venueSymbols.createShadedSymbol,
       isSunny
     )
+    userLocationMarker = useUserLocationMarker(
+      arcGISModules.Graphic,
+      arcGISModules.Point,
+      arcGISModules.SimpleMarkerSymbol
+    )
     mapBounds = useMapBounds(arcGISModules.webMercatorToGeographic)
 
     // Initialize the appropriate view based on mode
@@ -99,7 +115,7 @@ async function initializeMap(): Promise<void> {
 }
 
 async function initializeView(): Promise<void> {
-  if (!mapContainer.value || !arcGISModules) return
+  if (!mapContainerRef.value || !arcGISModules) return
 
   // Cleanup existing view
   currentView.value.cleanup()
@@ -107,7 +123,7 @@ async function initializeView(): Promise<void> {
   if (viewMode.value === '2d') {
     // Initialize 2D map view
     await mapView.initialize(
-      mapContainer.value,
+      mapContainerRef.value,
       props.center,
       props.zoom,
       {
@@ -124,7 +140,7 @@ async function initializeView(): Promise<void> {
   } else {
     // Initialize 3D scene view
     await sceneView.initialize(
-      mapContainer.value,
+      mapContainerRef.value,
       props.center,
       props.zoom,
       {

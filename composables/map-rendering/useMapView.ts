@@ -56,14 +56,12 @@ export function useMapView() {
       await view.when()
 
       // Watch for stationary state (map stopped moving)
-      stationaryWatchHandle = reactiveUtils.watch(
-        () => Boolean(view?.stationary),
-        (stationary: boolean) => {
-          if (stationary && view) {
-            callbacks.onBoundsChanged(stationary)
-          }
+      stationaryWatchHandle = reactiveUtils.watch(() => !!view?.stationary, (stationary: boolean) => {
+        if (stationary && view) {
+          callbacks.onBoundsChanged(stationary)
         }
-      )
+      }
+    )
 
       // Handle click events
       view.on('click', async (event) => {
@@ -83,7 +81,6 @@ export function useMapView() {
       console.error('Error initializing map view:', error)
       throw error
     } finally {
-      // Always set loading to false, even if there's an error
       isLoading.value = false
     }
   }

@@ -137,6 +137,10 @@ export function useMapExplorer() {
         geoState.value.longitude,
         LOCATE_ME_ZOOM
       )
+      mapRef.value?.setUserLocation(
+        geoState.value.latitude,
+        geoState.value.longitude
+      )
     }
   }
 
