@@ -181,6 +181,7 @@ onUnmounted(() => {
   }
   mapView.cleanup()
   sceneView.cleanup()
+  userLocationMarker?.clearUserLocation(currentView.value.getVenueGraphicsLayer())
 })
 
 // Watchers
