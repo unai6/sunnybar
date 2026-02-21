@@ -144,14 +144,14 @@ export function useVenues() {
       store.error = errorCode
       store.venues = []
       store.loading = false
+
       return errorCode
     }
 
-    store.venues = data.venues.map((apiVenue) =>
-      apiVenueToDomain(apiVenue, coordinates, sunlightStatus, venue)
-    )
+    store.venues = data.venues.map((apiVenue) => apiVenueToDomain(apiVenue, coordinates, sunlightStatus, venue))
     store.lastBbox = bbox
     store.loading = false
+
     return null
   }
 

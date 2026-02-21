@@ -129,7 +129,7 @@ async function onLocateMe(): Promise<void> {
     />
 
     <!-- Desktop Layout -->
-    <div class="h-full lg:grid lg:grid-cols-[260px_1fr_230px] gap-0">
+    <div class="h-full lg:grid lg:grid-cols-[260px_1fr_300px] gap-0">
       <!-- Control Panel (desktop only) -->
       <aside class="hidden lg:block border-r border-gray-200 overflow-y-auto" aria-label="Search controls">
         <ControlPanel

@@ -9,7 +9,7 @@ export function useMapBounds(
   let boundsUpdateTimeout: NodeJS.Timeout | null = null
 
   function emitBounds(
-    view: __esri.MapView | null,
+    view: __esri.MapView | __esri.SceneView | null,
     emit: (bounds: {
       south: number;
       west: number;
@@ -41,7 +41,7 @@ export function useMapBounds(
   }
 
   function emitBoundsImmediate(
-    view: __esri.MapView | null,
+    view: __esri.MapView | __esri.SceneView | null,
     emit: (bounds: {
       south: number;
       west: number;

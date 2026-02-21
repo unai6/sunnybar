@@ -5,9 +5,10 @@ import { ref } from 'vue'
  * Manages MapView initialization, lifecycle, and interactions
  */
 export function useMapView() {
-  const MIN_ZOOM = 10
-  const MAX_ZOOM = 20
+  const MIN_ZOOM = 100
+  const MAX_ZOOM = 1
   const FLY_TO_DURATION_MS = 1000
+  const BASEMAP = 'streets-navigation-vector'
 
   let view: __esri.MapView | null = null
   let venueGraphicsLayer: __esri.GraphicsLayer | null = null
@@ -39,7 +40,7 @@ export function useMapView() {
       venueGraphicsLayer = new GraphicsLayer({ title: 'Venues' })
 
       const map = new EsriMap({
-        basemap: 'streets-navigation-vector',
+        basemap: BASEMAP,
         layers: [venueGraphicsLayer]
       })
 
@@ -125,6 +126,18 @@ export function useMapView() {
     return venueGraphicsLayer
   }
 
+  function setCenter(center: [number, number]): void {
+    if (view) {
+      view.center = { longitude: center[1], latitude: center[0] }
+    }
+  }
+
+  function setZoom(zoom: number): void {
+    if (view) {
+      view.zoom = zoom
+    }
+  }
+
   function cleanup(): void {
     if (stationaryWatchHandle) {
       stationaryWatchHandle.remove()
@@ -144,6 +157,8 @@ export function useMapView() {
     closePopups,
     getView,
     getVenueGraphicsLayer,
+    setCenter,
+    setZoom,
     cleanup
   }
 }

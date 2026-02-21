@@ -111,6 +111,10 @@
     "title": {
       "legend": "Estat de Llum Solar"
     },
+    "button": {
+      "view2d": "Vista 2D",
+      "view3d": "Vista 3D"
+    },
     "label": {
       "sunny": "Assolellat",
       "shaded": "A l'ombra",

@@ -111,6 +111,10 @@
     "title": {
       "legend": "Sunlight Status"
     },
+    "button": {
+      "view2d": "2D View",
+      "view3d": "3D View"
+    },
     "label": {
       "sunny": "Sunny",
       "shaded": "Shaded",
