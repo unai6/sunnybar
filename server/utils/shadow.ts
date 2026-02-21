@@ -78,10 +78,10 @@ export function parseBuildings(
   }>
 ): Building[] {
   return elements
-    .map((el) => {
-      const tags = el.tags || {}
-      const lat = el.lat ?? el.center?.lat
-      const lon = el.lon ?? el.center?.lon
+    .map((element) => {
+      const tags = element.tags || {}
+      const lat = element.lat ?? element.center?.lat
+      const lon = element.lon ?? element.center?.lon
 
       if (!lat || !lon) return null
 
@@ -92,13 +92,13 @@ export function parseBuildings(
       }
 
       return {
-        id: `${el.type}/${el.id}`,
+        id: `${element.type}/${element.id}`,
         latitude: lat,
         longitude: lon,
         height
       }
     })
-    .filter((b): b is Building => b !== null)
+    .filter((building): building is Building => building !== null)
 }
 
 /**
@@ -159,17 +159,23 @@ function distanceInMeters(
   lat2: number,
   lon2: number
 ): number {
-  const R = 6371000 // Earth radius in meters
-  const dLat = ((lat2 - lat1) * Math.PI) / 180
-  const dLon = ((lon2 - lon1) * Math.PI) / 180
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+  const earthRadiusMeters = 6371000
+  const latitudeDifferenceRadians = ((lat2 - lat1) * Math.PI) / 180
+  const longitudeDifferenceRadians = ((lon2 - lon1) * Math.PI) / 180
+  const squareOfHalfChordLength =
+    Math.sin(latitudeDifferenceRadians / 2) *
+      Math.sin(latitudeDifferenceRadians / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
       Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2)
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  return R * c
+      Math.sin(longitudeDifferenceRadians / 2) *
+      Math.sin(longitudeDifferenceRadians / 2)
+  const angularDistance =
+    2 *
+    Math.atan2(
+      Math.sqrt(squareOfHalfChordLength),
+      Math.sqrt(1 - squareOfHalfChordLength)
+    )
+  return earthRadiusMeters * angularDistance
 }
 
 /**

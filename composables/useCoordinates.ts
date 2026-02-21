@@ -40,21 +40,32 @@ export function useCoordinates() {
   }
 
   /**
-   * Calculate distance between two coordinates in meters
+   * Calculate distance between two coordinates in meters using Haversine formula
    */
   function calculateDistance(from: Coordinates, to: Coordinates): number {
-    const R = 6371e3 // Earth radius in meters
-    const φ1 = (from.latitude * Math.PI) / 180
-    const φ2 = (to.latitude * Math.PI) / 180
-    const Δφ = ((to.latitude - from.latitude) * Math.PI) / 180
-    const Δλ = ((to.longitude - from.longitude) * Math.PI) / 180
+    const earthRadiusMeters = 6371e3
+    const latitudeFromRadians = (from.latitude * Math.PI) / 180
+    const latitudeToRadians = (to.latitude * Math.PI) / 180
+    const latitudeDifferenceRadians =
+      ((to.latitude - from.latitude) * Math.PI) / 180
+    const longitudeDifferenceRadians =
+      ((to.longitude - from.longitude) * Math.PI) / 180
 
-    const a =
-      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const squareOfHalfChordLength =
+      Math.sin(latitudeDifferenceRadians / 2) *
+        Math.sin(latitudeDifferenceRadians / 2) +
+      Math.cos(latitudeFromRadians) *
+        Math.cos(latitudeToRadians) *
+        Math.sin(longitudeDifferenceRadians / 2) *
+        Math.sin(longitudeDifferenceRadians / 2)
+    const angularDistance =
+      2 *
+      Math.atan2(
+        Math.sqrt(squareOfHalfChordLength),
+        Math.sqrt(1 - squareOfHalfChordLength)
+      )
 
-    return R * c
+    return earthRadiusMeters * angularDistance
   }
 
   return {

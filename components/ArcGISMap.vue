@@ -252,7 +252,7 @@ async function initializeMap(): Promise<void> {
 
       if (graphicHit) {
         const venueId = graphicHit.graphic.attributes.id
-        const venue = props.venues.find(v => v.id === venueId)
+        const venue = props.venues.find(venueItem => venueItem.id === venueId)
         if (venue) emit('venue-click', venue)
       }
     })

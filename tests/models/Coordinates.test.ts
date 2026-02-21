@@ -47,15 +47,15 @@ describe('Coordinates Model', () => {
 
   describe('areEqual', () => {
     it('should return true for equal coordinates', () => {
-      const a = create(40.4168, -3.7038)
-      const b = create(40.4168, -3.7038)
-      expect(areEqual(a, b)).toBe(true)
+      const firstCoords = create(40.4168, -3.7038)
+      const secondCoords = create(40.4168, -3.7038)
+      expect(areEqual(firstCoords, secondCoords)).toBe(true)
     })
 
     it('should return false for different coordinates', () => {
-      const a = create(40.4168, -3.7038)
-      const b = create(41.3851, 2.1734)
-      expect(areEqual(a, b)).toBe(false)
+      const firstCoords = create(40.4168, -3.7038)
+      const secondCoords = create(41.3851, 2.1734)
+      expect(areEqual(firstCoords, secondCoords)).toBe(false)
     })
   })
 

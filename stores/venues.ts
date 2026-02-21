@@ -22,20 +22,20 @@ export const useVenuesStore = defineStore('venues', () => {
 
   // Computed values for convenience
   const sunnyVenues = computed(() =>
-    venues.value.filter((v) => venue.isSunny(v))
+    venues.value.filter((venueItem) => venue.isSunny(venueItem))
   )
   const shadedVenues = computed(() =>
-    venues.value.filter((v) => !venue.isSunny(v))
+    venues.value.filter((venueItem) => !venue.isSunny(venueItem))
   )
   const filteredVenues = computed(() => {
     let result = venues.value
 
     if (filters.value.onlySunny) {
-      result = result.filter((v) => venue.isSunny(v))
+      result = result.filter((venueItem) => venue.isSunny(venueItem))
     }
 
     if (filters.value.onlyWithOutdoorSeating) {
-      result = result.filter((v) => venue.hasOutdoorSeating(v))
+      result = result.filter((venueItem) => venue.hasOutdoorSeating(venueItem))
     }
 
     return result

@@ -8,7 +8,7 @@ const availableLocales = computed(() => {
 })
 
 const selectedLocale = computed({
-  get: () => availableLocales.value.find(l => l.code === locale.value),
+  get: () => availableLocales.value.find(availableLocale => availableLocale.code === locale.value),
   set: (val) => {
     if (val) setLocale(val.code as 'es' | 'en' | 'ca')
   }
