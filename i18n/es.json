@@ -146,6 +146,9 @@
       "bboxTooLarge": "El área es demasiado grande. Haz zoom para buscar (máx. ~5km).",
       "fetchVenues": "No se pudieron cargar los locales. Inténtalo de nuevo.",
       "geolocation": "No se pudo obtener tu ubicación. Activa los servicios de ubicación.",
+      "geolocationDenied": "Acceso a la ubicación denegado. Por favor, habilita los permisos de ubicación en la configuración de tu navegador para usar esta función.",
+      "geolocationUnavailable": "La información de ubicación no está disponible. Por favor, inténtalo de nuevo.",
+      "geolocationTimeout": "La solicitud de ubicación ha caducado. Por favor, inténtalo de nuevo.",
       "network": "Error de red. Comprueba tu conexión e inténtalo de nuevo."
     }
   }

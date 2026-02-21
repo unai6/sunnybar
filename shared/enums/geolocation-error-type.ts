@@ -1,0 +1,10 @@
+/**
+ * Geolocation error types
+ */
+export enum GeolocationErrorType {
+  PERMISSION_DENIED = 'PERMISSION_DENIED',
+  POSITION_UNAVAILABLE = 'POSITION_UNAVAILABLE',
+  TIMEOUT = 'TIMEOUT',
+  NOT_SUPPORTED = 'NOT_SUPPORTED',
+  UNKNOWN = 'UNKNOWN',
+}

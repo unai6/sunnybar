@@ -79,10 +79,26 @@ async function onLocateMe(): Promise<void> {
   const { error } = await attempt(() => handleLocateMe())
   if (error) {
     console.error('Geolocation error:', error)
+    
+    // Determine the specific error message based on error type
+    let errorKey = 'toast.error.geolocation'
+    
+    // Check if error has a code property (GeolocationPositionError)
+    if ('code' in error && typeof error.code === 'number') {
+      const errorCode = error.code
+      if (errorCode === 1) { // PERMISSION_DENIED
+        errorKey = 'toast.error.geolocationDenied'
+      } else if (errorCode === 2) { // POSITION_UNAVAILABLE
+        errorKey = 'toast.error.geolocationUnavailable'
+      } else if (errorCode === 3) { // TIMEOUT
+        errorKey = 'toast.error.geolocationTimeout'
+      }
+    }
+    
     toast.add({
       severity: ToastSeverity.ERROR,
       summary: t('toast.error.title'),
-      detail: t('toast.error.geolocation'),
+      detail: t(errorKey),
       life: TOAST_DURATION_MS
     })
   }

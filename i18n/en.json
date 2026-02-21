@@ -146,6 +146,9 @@
       "bboxTooLarge": "The area is too large. Please zoom in to search (max ~5km).",
       "fetchVenues": "Could not load venues. Please try again.",
       "geolocation": "Could not get your location. Please enable location services.",
+      "geolocationDenied": "Location access denied. Please enable location permissions in your browser settings to use this feature.",
+      "geolocationUnavailable": "Location information is unavailable. Please try again.",
+      "geolocationTimeout": "Location request timed out. Please try again.",
       "network": "Network error. Check your connection and try again."
     }
   }

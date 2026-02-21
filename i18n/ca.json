@@ -146,6 +146,9 @@
       "bboxTooLarge": "L'àrea és massa gran. Fes zoom per cercar (màx. ~5km).",
       "fetchVenues": "No s'han pogut carregar els locals. Torna-ho a provar.",
       "geolocation": "No s'ha pogut obtenir la teva ubicació. Activa els serveis d'ubicació.",
+      "geolocationDenied": "Accés a la ubicació denegat. Si us plau, habilita els permisos d'ubicació a la configuració del teu navegador per utilitzar aquesta funció.",
+      "geolocationUnavailable": "La informació d'ubicació no està disponible. Si us plau, torna-ho a intentar.",
+      "geolocationTimeout": "La sol·licitud d'ubicació ha caducat. Si us plau, torna-ho a intentar.",
       "network": "Error de xarxa. Comprova la teva connexió i torna-ho a provar."
     }
   }
