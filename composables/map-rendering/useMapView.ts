@@ -1,47 +1,47 @@
-import { ref } from "vue";
+import { ref } from 'vue'
 
 /**
  * useMapView Composable
  * Manages MapView initialization, lifecycle, and interactions
  */
 export function useMapView() {
-  const MIN_ZOOM = 10;
-  const MAX_ZOOM = 20;
-  const FLY_TO_DURATION_MS = 1000;
+  const MIN_ZOOM = 10
+  const MAX_ZOOM = 20
+  const FLY_TO_DURATION_MS = 1000
 
-  let view: __esri.MapView | null = null;
-  let venueGraphicsLayer: __esri.GraphicsLayer | null = null;
-  const isLoading = ref(true);
+  let view: __esri.MapView | null = null
+  let venueGraphicsLayer: __esri.GraphicsLayer | null = null
+  const isLoading = ref(true)
 
-  let stationaryWatchHandle: __esri.WatchHandle | null = null;
+  let stationaryWatchHandle: __esri.WatchHandle | null = null
 
   async function initialize(
     container: HTMLDivElement,
     center: [number, number],
     zoom: number,
     modules: {
-      MapView: typeof import("@arcgis/core/views/MapView").default;
-      EsriMap: typeof import("@arcgis/core/Map").default;
-      GraphicsLayer: typeof import("@arcgis/core/layers/GraphicsLayer").default;
-      reactiveUtils: typeof import("@arcgis/core/core/reactiveUtils");
+      MapView: typeof import('@arcgis/core/views/MapView').default;
+      EsriMap: typeof import('@arcgis/core/Map').default;
+      GraphicsLayer: typeof import('@arcgis/core/layers/GraphicsLayer').default;
+      reactiveUtils: typeof import('@arcgis/core/core/reactiveUtils');
     },
     callbacks: {
       onBoundsChanged: (stationary: boolean) => void;
       onVenueClick: (venueId: string) => void;
-    },
+    }
   ): Promise<void> {
     // Ensure loading state is set
-    isLoading.value = true;
+    isLoading.value = true
 
     try {
-      const { MapView, EsriMap, GraphicsLayer, reactiveUtils } = modules;
+      const { MapView, EsriMap, GraphicsLayer, reactiveUtils } = modules
 
-      venueGraphicsLayer = new GraphicsLayer({ title: "Venues" });
+      venueGraphicsLayer = new GraphicsLayer({ title: 'Venues' })
 
       const map = new EsriMap({
-        basemap: "streets-navigation-vector",
-        layers: [venueGraphicsLayer],
-      });
+        basemap: 'streets-navigation-vector',
+        layers: [venueGraphicsLayer]
+      })
 
       view = new MapView({
         container,
@@ -49,41 +49,41 @@ export function useMapView() {
         center: [center[1], center[0]],
         zoom,
         constraints: { minZoom: MIN_ZOOM, maxZoom: MAX_ZOOM },
-        popupEnabled: false,
-      });
+        popupEnabled: false
+      })
 
-      await view.when();
+      await view.when()
 
       // Watch for stationary state (map stopped moving)
       stationaryWatchHandle = reactiveUtils.watch(
         () => Boolean(view?.stationary),
         (stationary: boolean) => {
           if (stationary && view) {
-            callbacks.onBoundsChanged(stationary);
+            callbacks.onBoundsChanged(stationary)
           }
-        },
-      );
+        }
+      )
 
       // Handle click events
-      view.on("click", async (event) => {
-        const response = await view!.hitTest(event);
+      view.on('click', async (event) => {
+        const response = await view!.hitTest(event)
         const graphicHit = response.results.find(
           (result): result is __esri.GraphicHit =>
-            result.type === "graphic" &&
-            result.graphic.layer === venueGraphicsLayer,
-        );
+            result.type === 'graphic' &&
+            result.graphic.layer === venueGraphicsLayer
+        )
 
         if (graphicHit) {
-          const venueId = graphicHit.graphic.attributes.id;
-          callbacks.onVenueClick(venueId);
+          const venueId = graphicHit.graphic.attributes.id
+          callbacks.onVenueClick(venueId)
         }
-      });
+      })
     } catch (error) {
-      console.error("Error initializing map view:", error);
-      throw error;
+      console.error('Error initializing map view:', error)
+      throw error
     } finally {
       // Always set loading to false, even if there's an error
-      isLoading.value = false;
+      isLoading.value = false
     }
   }
 
@@ -92,10 +92,10 @@ export function useMapView() {
       view.goTo(
         {
           center: [longitude, latitude],
-          zoom: zoom || view.zoom,
+          zoom: zoom || view.zoom
         },
-        { duration: FLY_TO_DURATION_MS },
-      );
+        { duration: FLY_TO_DURATION_MS }
+      )
     }
   }
 
@@ -104,35 +104,35 @@ export function useMapView() {
       view.goTo(
         {
           center: [center[1], center[0]],
-          zoom,
+          zoom
         },
-        { duration: FLY_TO_DURATION_MS },
-      );
+        { duration: FLY_TO_DURATION_MS }
+      )
     }
   }
 
   function closePopups(): void {
     if (view) {
-      view.closePopup();
+      view.closePopup()
     }
   }
 
   function getView(): __esri.MapView | null {
-    return view;
+    return view
   }
 
   function getVenueGraphicsLayer(): __esri.GraphicsLayer | null {
-    return venueGraphicsLayer;
+    return venueGraphicsLayer
   }
 
   function cleanup(): void {
     if (stationaryWatchHandle) {
-      stationaryWatchHandle.remove();
-      stationaryWatchHandle = null;
+      stationaryWatchHandle.remove()
+      stationaryWatchHandle = null
     }
     if (view) {
-      view.destroy();
-      view = null;
+      view.destroy()
+      view = null
     }
   }
 
@@ -144,6 +144,6 @@ export function useMapView() {
     closePopups,
     getView,
     getVenueGraphicsLayer,
-    cleanup,
-  };
+    cleanup
+  }
 }
