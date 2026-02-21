@@ -24,9 +24,7 @@ export interface SunInfo {
 export const useSunInfoStore = defineStore('sunInfo', () => {
   const sunInfo = ref<SunInfo | null>(null)
   const selectedDateTime = ref<Date>(new Date())
-  const currentLocation = ref<{ latitude: number; longitude: number } | null>(
-    null
-  )
+  const currentLocation = ref<{ latitude: number; longitude: number } | null>(null)
 
   return {
     sunInfo,
